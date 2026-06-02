@@ -520,5 +520,20 @@
     </p>
   </div>
 
+  <script>
+    const phoneInput = document.querySelector('input[name="parent_phone"]');
+    phoneInput.addEventListener('input', function (e) {
+      let val = e.target.value.replace(/\D/g, '').substring(0, 10);
+      if (val.length >= 7) {
+        val = '(' + val.substring(0,3) + ') ' + val.substring(3,6) + '-' + val.substring(6);
+      } else if (val.length >= 4) {
+        val = '(' + val.substring(0,3) + ') ' + val.substring(3);
+      } else if (val.length > 0) {
+        val = '(' + val;
+      }
+      e.target.value = val;
+    });
+  </script>
+
 </body>
 </html>
