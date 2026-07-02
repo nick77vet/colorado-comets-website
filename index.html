@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Colorado Comets Baseball | 11U 2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,900&family=Barlow:wght@400;500;600&family=Knewave&display=swap" rel="stylesheet">
   <style>
     :root {
       --orange: #F25C05;
@@ -62,6 +62,36 @@
       position: relative;
       z-index: 1;
       filter: drop-shadow(0 0 50px rgba(242,92,5,0.4));
+    }
+
+    .hero-slogan {
+      font-family: 'Knewave', cursive;
+      font-size: clamp(22px, 4.5vw, 36px);
+      color: var(--orange);
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 12px rgba(242,92,5,0.3);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .hero-slogan::before,
+    .hero-slogan::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--orange));
+      max-width: 160px;
+    }
+
+    .hero-slogan::after {
+      background: linear-gradient(to left, transparent, var(--orange));
     }
 
     .hero-colorado {
@@ -477,6 +507,7 @@
   <!-- HERO -->
   <div class="hero">
     <img class="hero-logo" src="Logo_3_transparent.png" alt="Colorado Comets">
+    <p class="hero-slogan">Burn Bright. Blaze Your Trail.</p>
     <p class="hero-colorado">Fort Collins, Colorado &bull; 11U (2027) &bull; Competitive Baseball</p>
     <h1 class="hero-headline"><span>Limited Spots</span><br>Available</h1>
     <p class="hero-sub">Request a private tryout &nbsp;&bull;&nbsp; info@cometbaseball.com</p>
@@ -496,7 +527,7 @@
         <div class="tryout-label">Roster Status</div>
         <div class="tryout-value" style="font-size: clamp(28px, 5vw, 52px);">Limited Spots Remaining</div>
       </div>
-      <div class="tryout-divider"></div>
+
       <div>
         <div class="tryout-label">Request a Private Tryout</div>
         <div class="tryout-value tbd">info@cometbaseball.com</div>
