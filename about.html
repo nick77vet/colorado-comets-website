@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colorado Comets | About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    :root {
+      --orange: #F25C05;
+      --black: #0A0A0A;
+      --cream: #F2E6D0;
+      --charcoal: #1E1E1E;
+      --burnt: #C94700;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--black);
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      background: var(--black);
+      border-bottom: 2px solid var(--charcoal);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .site-nav img {
+      height: 44px;
+      filter: drop-shadow(0 0 10px rgba(242,92,5,0.3));
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--orange); }
+    .nav-links a.active { opacity: 1; color: var(--orange); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--charcoal);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(242,92,5,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-hero-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(48px, 9vw, 88px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.95;
+      color: var(--cream);
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-hero-title span { color: var(--orange); }
+
+    .page-hero-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(15px, 2.5vw, 19px);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.5;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+
+    .intro p {
+      font-size: clamp(17px, 2.5vw, 21px);
+      line-height: 1.75;
+      color: var(--cream);
+      opacity: 0.8;
+      margin-bottom: 16px;
+    }
+
+    .intro p:last-child { margin-bottom: 0; }
+
+    .intro strong {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    /* ── PILLARS ── */
+    .pillars {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2px;
+      background: var(--charcoal);
+      border: 2px solid var(--charcoal);
+    }
+
+    .pillar {
+      background: var(--black);
+      padding: 40px 36px;
+      transition: background 0.2s;
+    }
+
+    .pillar:hover { background: #0f0f0f; }
+
+    .pillar-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .pillar-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(24px, 3.5vw, 32px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      color: var(--cream);
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+
+    .pillar-rule {
+      width: 40px;
+      height: 3px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .pillar-body {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--cream);
+      opacity: 0.75;
+    }
+
+    .pillar-body p { margin-bottom: 10px; }
+    .pillar-body p:last-child { margin-bottom: 0; }
+
+    .pillar-list {
+      list-style: none;
+      margin: 10px 0;
+    }
+
+    .pillar-list li {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--cream);
+      opacity: 0.75;
+      padding-left: 20px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .pillar-list li::before {
+      content: '✦';
+      color: var(--orange);
+      position: absolute;
+      left: 0;
+      font-size: 10px;
+      top: 4px;
+    }
+
+    /* ── STEWARDSHIP BLOCK ── */
+    .stewardship {
+      background: var(--charcoal);
+      border-left: 5px solid var(--orange);
+      max-width: 1100px;
+      margin: 0 auto 0;
+      padding: 56px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stewardship::after {
+      content: '"';
+      position: absolute;
+      right: 40px;
+      top: -20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 220px;
+      font-weight: 900;
+      color: var(--orange);
+      opacity: 0.05;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .stewardship-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+
+    .stewardship-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stewardship-rule {
+      width: 50px;
+      height: 3px;
+      background: var(--orange);
+      margin-bottom: 24px;
+    }
+
+    .stewardship p {
+      font-size: clamp(15px, 2.2vw, 18px);
+      line-height: 1.8;
+      color: var(--cream);
+      opacity: 0.8;
+      margin-bottom: 16px;
+      max-width: 780px;
+    }
+
+    .stewardship p:last-child { margin-bottom: 0; }
+
+    .stewardship strong {
+      color: var(--cream);
+      opacity: 1;
+      font-style: italic;
+    }
+
+    /* ── CTA ── */
+    .cta-strip {
+      background: var(--orange);
+      padding: 48px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-strip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 20px,
+        rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 40px
+      );
+    }
+
+    .cta-strip-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-strip h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .cta-strip a {
+      display: inline-block;
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 16px 44px;
+      text-decoration: none;
+      border: 3px solid rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    .cta-strip a:hover { background: var(--charcoal); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--black);
+      border-top: 2px solid var(--charcoal);
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .footer-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.3;
+    }
+
+    .footer-tagline em { color: var(--orange); font-style: normal; }
+
+    @media (max-width: 600px) {
+      .stewardship { padding: 36px 28px; }
+      .nav-links { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="index.html"><img src="Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="register.html">Register</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <p class="page-hero-label">Colorado Comets &bull; 11U (2027)</p>
+    <h1 class="page-hero-title">Why We <span>Exist</span></h1>
+    <p class="page-hero-sub">We didn't create the Comets because youth baseball needed another team.</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>We created it because we believed young athletes deserved a <strong>better baseball experience.</strong></p>
+    <p>What does a better baseball experience look like?</p>
+  </div>
+
+  <!-- PILLARS -->
+  <div class="pillars">
+
+    <div class="pillar">
+      <div class="pillar-number">01</div>
+      <div class="pillar-title">Every Player Deserves Great Coaching</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>Whether a player is your ace pitcher or just picked up a baseball a few years ago, they deserve coaches who are invested in their growth.</p>
+        <p>We believe every player can improve with the right instruction, encouragement, and accountability. That means teaching, demonstrating, correcting, and celebrating progress.</p>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-number">02</div>
+      <div class="pillar-title">Development Comes Before Results</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>We love to compete. We expect effort. We celebrate wins. But our success isn't measured only by tournament trophies.</p>
+        <p>It is measured by:</p>
+        <ul class="pillar-list">
+          <li>The player who throws strikes with confidence after struggling all season</li>
+          <li>The hitter who finally trusts his swing</li>
+          <li>The infielder who learns to slow the game down</li>
+          <li>The catcher who grows into a leader behind the plate</li>
+        </ul>
+        <p>Those are the victories that last long after the weekend is over.</p>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-number">03</div>
+      <div class="pillar-title">Character Matters</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>Baseball is an incredible teacher.</p>
+        <p>It teaches resilience after striking out. Humility after success. Confidence through preparation. Respect for teammates, opponents, umpires, and the game itself.</p>
+        <p>We believe great teammates become great players, and great players become great people.</p>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-number">04</div>
+      <div class="pillar-title">Growth Doesn't Happen by Accident</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>Every practice has a purpose. Every drill has a reason. Every conversation is an opportunity to teach.</p>
+        <p>We constantly evaluate how we coach because we believe our players deserve coaches who are learning and improving right alongside them.</p>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-number">05</div>
+      <div class="pillar-title">The Experience Should Be Fun</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>Competitive baseball should challenge players. It should push them. It should demand focus and commitment.</p>
+        <p>But it should also be the highlight of their week.</p>
+        <p>We want our players to love coming to the field, enjoy competing with their teammates, and build memories that last long after the final out.</p>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-number">06</div>
+      <div class="pillar-title">Stewardship</div>
+      <div class="pillar-rule"></div>
+      <div class="pillar-body">
+        <p>Every season, parents place an incredible amount of trust in us. They trust us with their child's time, development, confidence, and love of the game.</p>
+        <p>We don't take that responsibility lightly.</p>
+        <p>We believe coaching is more than organizing practices and filling out a lineup card. It is an opportunity to help young athletes grow into confident players, supportive teammates, and responsible young adults.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STEWARDSHIP CLOSING -->
+  <div class="stewardship">
+    <div class="stewardship-label">Our Commitment</div>
+    <h2 class="stewardship-title">Coaching With Purpose</h2>
+    <div class="stewardship-rule"></div>
+    <p>We may coach a player for only a few seasons, but the lessons they learn, the habits they build, and the memories they create can last a lifetime.</p>
+    <p>That is why we approach every practice, every game, and every conversation with purpose.</p>
+    <p>We are not simply coaching a baseball team.</p>
+    <p><strong>We are entrusted with helping shape young athletes, and we intend to honor that responsibility every day.</strong></p>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding: 56px 24px; text-align: center; background: var(--black);">
+    <a href="register.html" style="display: inline-block; background: var(--orange); color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: clamp(18px, 3vw, 24px); font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; padding: 18px 48px; border: 3px solid var(--burnt); box-shadow: 0 0 0 6px rgba(242,92,5,0.15); text-decoration: none; transition: background 0.2s;">Submit Your Info</a>
+    <p style="margin-top: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5;">or email us at <a href="mailto:info@cometbaseball.com" style="color: var(--orange); text-decoration: none;">info@cometbaseball.com</a></p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="footer-tagline">
+      <em>Developing Confident Athletes</em> Through Baseball.
+    </p>
+  </div>
+
+</body>
+</html>

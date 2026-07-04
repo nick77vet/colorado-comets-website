@@ -25,6 +25,40 @@
       overflow-x: hidden;
     }
 
+    /* ── NAV ── */
+    .site-nav {
+      background: var(--black);
+      border-bottom: 2px solid var(--charcoal);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .site-nav img {
+      height: 44px;
+      filter: drop-shadow(0 0 10px rgba(242,92,5,0.3));
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--orange); }
+    .nav-links a.active { opacity: 1; color: var(--orange); }
+
     /* ── HERO ── */
     .hero {
       position: relative;
@@ -503,6 +537,16 @@
   </style>
 </head>
 <body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="index.html"><img src="Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="register.html">Register</a>
+    </div>
+  </nav>
 
   <!-- HERO -->
   <div class="hero">

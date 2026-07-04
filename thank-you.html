@@ -26,19 +26,38 @@
       flex-direction: column;
     }
 
-    .site-header {
+    /* ── NAV ── */
+    .site-nav {
       background: var(--black);
       border-bottom: 2px solid var(--charcoal);
-      padding: 20px 24px;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-
-    .site-header img {
-      height: 48px;
-      filter: drop-shadow(0 0 12px rgba(242,92,5,0.3));
+    .site-nav img {
+      height: 44px;
+      filter: drop-shadow(0 0 10px rgba(242,92,5,0.3));
     }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--orange); }
 
     .main {
       flex: 1;
@@ -139,9 +158,14 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <img src="Logo_3_transparent.png" alt="Colorado Comets">
-  </header>
+  <nav class="site-nav">
+    <a href="index.html"><img src="Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="register.html">Register</a>
+    </div>
+  </nav>
 
   <div class="main">
     <div class="card">

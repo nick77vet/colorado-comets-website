@@ -25,34 +25,39 @@
       overflow-x: hidden;
     }
 
-    .site-header {
+    /* ── NAV ── */
+    .site-nav {
       background: var(--black);
       border-bottom: 2px solid var(--charcoal);
-      padding: 20px 24px;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
     }
-
-    .site-header img {
-      height: 48px;
-      filter: drop-shadow(0 0 12px rgba(242,92,5,0.3));
+    .site-nav img {
+      height: 44px;
+      filter: drop-shadow(0 0 10px rgba(242,92,5,0.3));
     }
-
-    .back-link {
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav-links a {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--cream);
       text-decoration: none;
-      transition: opacity 0.2s;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
     }
-
-    .back-link:hover { opacity: 0.7; }
+    .nav-links a:hover { opacity: 1; color: var(--orange); }
+    .nav-links a.active { opacity: 1; color: var(--orange); }
 
     .page-hero {
       background: var(--charcoal);
@@ -299,10 +304,14 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <img src="Logo_3_transparent.png" alt="Colorado Comets">
-    <a class="back-link" href="index.html">← Back to Home</a>
-  </header>
+  <nav class="site-nav">
+    <a href="index.html"><img src="Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="register.html" class="active">Register</a>
+    </div>
+  </nav>
 
   <div class="page-hero">
     <p class="page-hero-label">11U (2027) &bull; Fort Collins, Colorado</p>
