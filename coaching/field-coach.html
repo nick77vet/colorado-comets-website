@@ -1134,8 +1134,8 @@
   // access control lives in the database's row-level security policies
   // and is double-checked server-side in the Netlify Functions. Never
   // put the SECRET key here.
-  var SUPABASE_URL = 'https://oqzvyqnbrzlsbxrygjyo.supabase.co';
-  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_FyyQoQ3LW8RR3d62Rmi7cQ_hIfAXrJT';
+  var SUPABASE_URL = 'REPLACE_WITH_YOUR_SUPABASE_URL';
+  var SUPABASE_PUBLISHABLE_KEY = 'REPLACE_WITH_YOUR_SUPABASE_PUBLISHABLE_KEY';
 
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
   var currentCoach = null; // { id, display_name, is_admin }
@@ -1652,10 +1652,29 @@
       var count = categoryPlayCount(cat.name);
       var row = document.createElement('div');
       row.className = 'admin-row';
-      row.innerHTML = '<div><div class="name"></div><div class="count"></div></div><button>Manage</button>';
+      if(count === 0){
+        row.innerHTML = '<div><div class="name"></div><div class="count"></div></div><div style="display:flex; gap:6px;"><button class="manage-btn">Manage</button><button class="delete-btn" style="color:var(--danger);">Delete</button></div>';
+      } else {
+        row.innerHTML = '<div><div class="name"></div><div class="count"></div></div><button class="manage-btn">Manage</button>';
+      }
       row.querySelector('.name').textContent = cat.name;
       row.querySelector('.count').textContent = count + (count===1?' play':' plays');
-      row.querySelector('button').addEventListener('click', function(){ openAdminDetail(cat); });
+      row.querySelector('.manage-btn').addEventListener('click', function(){ openAdminDetail(cat); });
+      var deleteBtn = row.querySelector('.delete-btn');
+      if(deleteBtn){
+        deleteBtn.addEventListener('click', function(){
+          showConfirm('Delete "'+cat.name+'"? It has no plays, so this can\'t be undone.', async function(){
+            try{
+              await apiCall('labels', { method: 'POST', body: { action: 'delete', labelId: cat.id } });
+              LABELS.categories = LABELS.categories.filter(function(c){ return c.id !== cat.id; });
+              renderAdminList();
+              showToast('Deleted "'+cat.name+'"');
+            }catch(err){
+              showToast(err.message);
+            }
+          });
+        });
+      }
       list.appendChild(row);
     });
   }
