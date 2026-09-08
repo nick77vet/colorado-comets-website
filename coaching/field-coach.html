@@ -1134,8 +1134,8 @@
   // access control lives in the database's row-level security policies
   // and is double-checked server-side in the Netlify Functions. Never
   // put the SECRET key here.
-  var SUPABASE_URL = 'https://oqzvyqnbrzlsbxrygjyo.supabase.co';
-  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_FyyQoQ3LW8RR3d62Rmi7cQ_hIfAXrJT';
+  var SUPABASE_URL = 'REPLACE_WITH_YOUR_SUPABASE_URL';
+  var SUPABASE_PUBLISHABLE_KEY = 'REPLACE_WITH_YOUR_SUPABASE_PUBLISHABLE_KEY';
 
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
   var currentCoach = null; // { id, display_name, is_admin }
@@ -1256,23 +1256,45 @@
     });
   }
 
-  function openSaveDialog(){
-    editingPlayId = null;
-    saveState = { phases: [], categories: [], tags: [], status: 'draft' };
-    document.getElementById('saveNameInput').value = '';
+  function labelIdsForNames(names, list){
+    return names.map(function(name){
+      var found = list.filter(function(l){ return l.name === name; })[0];
+      return found ? found.id : null;
+    }).filter(function(id){ return id !== null; });
+  }
+
+  function openSaveDialog(existingPlay){
+    editingPlayId = existingPlay ? existingPlay.id : null;
+    if(existingPlay){
+      saveState = {
+        phases: labelIdsForNames(existingPlay.phases, LABELS.phases),
+        categories: labelIdsForNames(existingPlay.categories, LABELS.categories),
+        tags: labelIdsForNames(existingPlay.tags, LABELS.tags),
+        status: existingPlay.status
+      };
+    } else {
+      saveState = { phases: [], categories: [], tags: [], status: 'draft' };
+    }
+    document.getElementById('saveNameInput').value = existingPlay ? existingPlay.name : '';
     document.getElementById('saveNameInput').style.borderColor = '';
     document.getElementById('phaseError').classList.remove('show');
     document.getElementById('categoryError').classList.remove('show');
     renderPicker('phasePickerRow', LABELS.phases, saveState.phases, 'phase');
     renderPicker('categoryPickerRow', LABELS.categories, saveState.categories, 'category');
     renderPicker('tagPickerRow', LABELS.tags, saveState.tags, 'tag');
-    document.getElementById('statusDraftBtn').classList.add('selected');
-    document.getElementById('statusPublishedBtn').classList.remove('selected');
+    if(saveState.status === 'published'){
+      document.getElementById('statusPublishedBtn').classList.add('selected');
+      document.getElementById('statusDraftBtn').classList.remove('selected');
+    } else {
+      document.getElementById('statusDraftBtn').classList.add('selected');
+      document.getElementById('statusPublishedBtn').classList.remove('selected');
+    }
+    document.getElementById('saveConfirmBtn').textContent = existingPlay ? 'Save changes' : 'Save play';
     saveDialog.classList.add('show');
     setTimeout(function(){ document.getElementById('saveNameInput').focus(); }, 50);
   }
-  document.getElementById('saveBtn').addEventListener('click', openSaveDialog);
-  document.getElementById('saveBtn2').addEventListener('click', openSaveDialog);
+  document.getElementById('saveBtn').addEventListener('click', function(){ openSaveDialog(); });
+  document.getElementById('saveBtn2').addEventListener('click', function(){ openSaveDialog(); });
   document.getElementById('saveCancelBtn').addEventListener('click', function(){ saveDialog.classList.remove('show'); });
 
   document.getElementById('statusDraftBtn').addEventListener('click', function(){
@@ -1425,11 +1447,14 @@
       if(editingPlayId){
         payload.id = editingPlayId;
         await apiCall('plays', { method: 'PUT', body: payload });
+        showToast('Updated "'+name+'"');
       } else {
         await apiCall('plays', { method: 'POST', body: payload });
+        showToast('Saved "'+name+'"');
       }
       saveDialog.classList.remove('show');
-      showToast('Saved "'+name+'"');
+      libState.teamPlays = [];
+      libState.minePlays = [];
     }catch(err){
       showToast(err.message);
     }
@@ -1538,7 +1563,7 @@
             '<span class="status-pill ' + play.status + '">' + play.status + '</span>' +
           '</div>' +
           '<div class="play-tags"></div>' +
-          '<div class="actions" style="margin-top:9px;"><button class="load">Load</button><button class="del" style="display:none;">Delete</button></div>' +
+          '<div class="actions" style="margin-top:9px;"><button class="load">Load</button><button class="edit" style="display:none;">Edit</button><button class="del" style="display:none;">Delete</button></div>' +
         '</div>';
       row.querySelector('.name').textContent = play.name;
       var tagContainer = row.querySelector('.play-tags');
@@ -1550,6 +1575,16 @@
         libSheet.classList.remove('open');
         showToast('Loaded "'+play.name+'"');
       });
+      var canEdit = play.createdBy === currentCoach.id || play.status === 'published';
+      var editBtn = row.querySelector('.edit');
+      if(canEdit){
+        editBtn.style.display = '';
+        editBtn.addEventListener('click', function(){
+          loadPlaySnapshot(play.snapshot);
+          libSheet.classList.remove('open');
+          openSaveDialog(play);
+        });
+      }
       var delBtn = row.querySelector('.del');
       if(play.createdBy === currentCoach.id && play.status === 'draft'){
         delBtn.style.display = '';
