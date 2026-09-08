@@ -1,0 +1,8 @@
+# If cometbaseball.com already has a netlify.toml, do NOT add a second
+# one — instead, merge just the [functions] section below into the
+# existing file. Having two netlify.toml files in the same repo is not
+# supported and only one will be used.
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
