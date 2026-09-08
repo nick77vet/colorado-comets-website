@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
 <title>Comets Field Coach</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
   :root{
     --dirt: #b98a5e;
@@ -28,7 +29,7 @@
     font-family: var(--font); color: var(--ink); overscroll-behavior: none;
     user-select: none; -webkit-user-select: none;
   }
-  #app{ display:flex; flex-direction:column; height:100vh; height:100dvh; }
+  #app{ display:flex; flex-direction:column; height:100vh; height:100dvh; position:relative; }
 
   header{
     display:flex; align-items:center; justify-content:space-between;
@@ -139,6 +140,113 @@
   .lib-item .actions button.del{ color: var(--danger); }
   #libEmpty{ text-align:center; color: var(--ink-dim); font-size:13px; padding: 40px 20px; }
 
+  /* Tabs: Team library / My drafts */
+  .tabs{ display:flex; gap:6px; padding: 10px 14px 0; flex-shrink:0; }
+  .tab{
+    flex:1; text-align:center; padding: 9px 4px; font-size:13px; font-weight:600;
+    color: var(--ink-dim); border-bottom: 2px solid transparent;
+  }
+  .tab.active{ color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* Filter bar */
+  #filterBar{ padding: 10px 14px 4px; flex-shrink:0; }
+  .filter-group{ margin-bottom:8px; }
+  .filter-group-label{ font-size:11px; color: var(--ink-dim); margin-bottom:5px; font-weight:600; }
+  .chip-row{ display:flex; gap:6px; flex-wrap:wrap; }
+  .chip{
+    background: rgba(255,255,255,0.05); border:1px solid var(--border);
+    color: var(--ink-dim); border-radius: 14px; padding: 5px 11px; font-size:12px; font-weight:500;
+  }
+  .chip.active{ background: var(--accent-2); color:#082230; border-color: var(--accent-2); }
+  .chip.phase-active{ background: var(--accent); color:#2a1d05; border-color: var(--accent); }
+  .filter-clear{ font-size:11.5px; color: var(--accent-2); margin-left:4px; }
+
+  #libSearchRow{ padding: 8px 14px; flex-shrink:0; }
+  #libSearchRow input{
+    width:100%; background: rgba(255,255,255,0.06); border:1px solid var(--border);
+    color: var(--ink); border-radius:8px; padding:9px 12px; font-size:14px;
+  }
+  #libResultCount{ padding: 2px 14px 6px; font-size:11.5px; color: var(--ink-dim); flex-shrink:0; }
+
+  .status-pill{
+    font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px; flex-shrink:0;
+    text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .status-pill.draft{ background: rgba(224,166,58,0.18); color: var(--accent); }
+  .status-pill.published{ background: rgba(79,176,214,0.18); color: var(--accent-2); }
+  .play-tags{ display:flex; gap:5px; flex-wrap:wrap; margin-top:9px; }
+  .tag-pill{ font-size:10.5px; padding: 3px 8px; border-radius: 9px; font-weight:500; }
+  .tag-pill.phase{ background: rgba(224,166,58,0.15); color: var(--accent); }
+  .tag-pill.category{ background: rgba(79,176,214,0.15); color: var(--accent-2); }
+  .tag-pill.tag{ background: rgba(255,255,255,0.07); color: var(--ink-dim); }
+
+  /* Save-flow label pickers */
+  .picker-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:2px; }
+  .picker-chip{
+    background: rgba(255,255,255,0.05); border:1px solid var(--border);
+    color: var(--ink-dim); border-radius: 14px; padding: 6px 12px; font-size:12.5px; font-weight:500;
+  }
+  .picker-chip.selected.phase{ background: var(--accent); color:#2a1d05; border-color: var(--accent); }
+  .picker-chip.selected.category{ background: var(--accent-2); color:#082230; border-color: var(--accent-2); }
+  .picker-chip.selected.tag{ background: rgba(255,255,255,0.18); color:#fff; border-color: rgba(255,255,255,0.3); }
+  .add-new-row{ display:flex; gap:6px; margin-top:8px; }
+  .add-new-row input{ flex:1; background: rgba(255,255,255,0.06); border:1px solid var(--border); color: var(--ink); border-radius:8px; padding:8px 10px; font-size:13px; }
+  .add-new-row button{ background: rgba(255,255,255,0.08); border:1px solid var(--border); color: var(--ink); border-radius:8px; padding:8px 12px; font-size:12.5px; font-weight:600; }
+  .field-error{ font-size:11.5px; color: var(--danger); margin-top:5px; display:none; }
+  .field-error.show{ display:block; }
+  .status-toggle{ display:flex; gap:6px; margin-top:2px; }
+  .status-toggle button{ flex:1; padding:9px; border-radius:8px; font-size:12.5px; font-weight:600; border:1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--ink-dim); }
+  .status-toggle button.selected{ background: rgba(255,255,255,0.14); color:#fff; border-color: rgba(255,255,255,0.3); }
+
+  .suggest-list{ margin-top:6px; display:none; flex-direction:column; gap:4px; }
+  .suggest-list.show{ display:flex; }
+  .suggest-item{
+    background: rgba(79,176,214,0.1); border:1px solid rgba(79,176,214,0.3);
+    color: var(--ink); border-radius:8px; padding:8px 10px; font-size:12.5px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .suggest-item .use-btn{ font-size:11.5px; font-weight:700; color: var(--accent-2); }
+
+  #confirmCreateOverlay{
+    position:absolute; inset:0; background: rgba(0,0,0,0.6); z-index:45;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #confirmCreateOverlay.show{ display:flex; }
+
+  /* Admin: manage categories */
+  #adminSheet{
+    position:absolute; inset:0; background: var(--panel-bg); z-index:40;
+    transform: translateX(100%); transition: transform 0.22s ease;
+    display:flex; flex-direction:column; visibility:hidden;
+  }
+  #adminSheet.open{ transform: translateX(0); visibility:visible; }
+  #adminSheet header{ background: var(--panel-bg-2); }
+  #adminList{ flex:1; overflow-y:auto; padding: 10px 14px 16px; }
+  .admin-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background: var(--panel-bg-2); border:1px solid var(--border); border-radius:10px;
+    padding: 12px 14px; margin-bottom:8px;
+  }
+  .admin-row .name{ font-size:14px; font-weight:600; }
+  .admin-row .count{ font-size:11.5px; color: var(--ink-dim); margin-top:2px; }
+  .admin-row button{ background: rgba(255,255,255,0.06); border:1px solid var(--border); color: var(--ink); border-radius:7px; padding:7px 11px; font-size:12px; font-weight:500; }
+  #adminDetail{
+    position:absolute; inset:0; background: var(--panel-bg); z-index:41;
+    transform: translateX(100%); transition: transform 0.22s ease;
+    display:flex; flex-direction:column; visibility:hidden;
+  }
+  #adminDetail.open{ transform: translateX(0); visibility:visible; }
+  #adminDetail header{ background: var(--panel-bg-2); }
+  .reassign-row{ display:flex; align-items:center; gap:8px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .reassign-row input[type=checkbox]{ width:18px; height:18px; flex-shrink:0; }
+  .reassign-row .play-name-small{ font-size:13.5px; flex:1; }
+  #moveToRow{ padding: 12px 14px; border-top:1px solid var(--border); background: var(--panel-bg-2); }
+  #moveToRow label{ font-size:11.5px; color: var(--ink-dim); font-weight:600; display:block; margin-bottom:6px; }
+  #moveToSelect{
+    width:100%; background: rgba(255,255,255,0.06); border:1px solid var(--border);
+    color: var(--ink); border-radius:8px; padding:9px 10px; font-size:13.5px; margin-bottom:8px;
+  }
+
   #toast{
     position:absolute; left:50%; bottom:90px; transform: translateX(-50%);
     background: rgba(20,32,26,0.95); color:#fff; padding:9px 16px; border-radius:20px;
@@ -146,6 +254,20 @@
     z-index:40; white-space:nowrap; border:1px solid var(--border);
   }
   #toast.show{ opacity:1; }
+
+  #loginScreen{
+    position:absolute; inset:0; background: var(--panel-bg); z-index:60;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  #loginScreen.hide{ display:none; }
+  #loginBox{
+    width:100%; max-width:340px; background: var(--panel-bg-2); border:1px solid var(--border);
+    border-radius:14px; padding:22px;
+  }
+  #loginBox input{
+    width:100%; background: rgba(255,255,255,0.06); border:1px solid var(--border);
+    color: var(--ink); border-radius:8px; padding:10px 12px; font-size:14px;
+  }
 
   #saveDialog{
     position:absolute; inset:0; background: rgba(0,0,0,0.55); z-index:35;
@@ -175,6 +297,21 @@
 <body>
 <div id="app">
 
+  <div id="loginScreen">
+    <div id="loginBox">
+      <h1 style="margin:0 0 4px; font-size:20px;">Comets Field Coach</h1>
+      <p style="margin:0 0 20px; font-size:13px; color:var(--ink-dim);">Coach login required to save and share plays.</p>
+      <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin-bottom:6px;">Email</label>
+      <input type="email" id="loginEmail" placeholder="you@cometbaseball.com" style="width:100%; margin-bottom:12px;">
+      <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin-bottom:6px;">Password</label>
+      <input type="password" id="loginPassword" placeholder="Your password" style="width:100%; margin-bottom:6px;">
+      <div id="loginError" style="font-size:12px; color:var(--danger); margin:6px 0; display:none;"></div>
+      <button class="icon-btn primary" id="loginSubmitBtn" style="width:100%; justify-content:center; margin-top:10px;">Log in</button>
+    </div>
+  </div>
+
+  <div id="appShell" style="display:none; flex-direction:column; height:100%;">
+
   <header>
     <div>
       <h1>Field Coach</h1>
@@ -201,12 +338,40 @@
     <div id="toast"></div>
 
     <div id="saveDialog">
-      <div class="dialog-box">
-        <h3>Save this play</h3>
+      <div class="dialog-box" style="max-height:85vh; overflow-y:auto;">
+        <h3>Save play</h3>
+        <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin:0 0 6px;">Play name</label>
         <input type="text" id="saveNameInput" placeholder="e.g. Bunt defense, runner on 1st" maxlength="60">
-        <div class="dialog-actions">
+
+        <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin:14px 0 6px;">Phase <span style="color:var(--danger);">*required</span></label>
+        <div class="picker-row" id="phasePickerRow"></div>
+        <div class="field-error" id="phaseError">Pick at least one phase.</div>
+
+        <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin:14px 0 6px;">Category <span style="color:var(--danger);">*required</span></label>
+        <div class="picker-row" id="categoryPickerRow"></div>
+        <div class="add-new-row">
+          <input type="text" id="newCategoryInput" placeholder="Search or add a category">
+          <button id="addCategoryBtn">Add</button>
+        </div>
+        <div class="suggest-list" id="categorySuggestList"></div>
+        <div class="field-error" id="categoryError">Pick or add at least one category.</div>
+
+        <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin:14px 0 6px;">Tags <span style="color:var(--ink-dim); font-weight:500;">optional</span></label>
+        <div class="picker-row" id="tagPickerRow"></div>
+        <div class="add-new-row">
+          <input type="text" id="newTagInput" placeholder="Add a tag">
+          <button id="addTagBtn">Add</button>
+        </div>
+
+        <label style="font-size:11.5px; color:var(--ink-dim); font-weight:600; display:block; margin:14px 0 6px;">Status</label>
+        <div class="status-toggle">
+          <button class="selected" data-status="draft" id="statusDraftBtn">Draft (only you)</button>
+          <button data-status="published" id="statusPublishedBtn">Published (team)</button>
+        </div>
+
+        <div class="dialog-actions" style="margin-top:18px;">
           <button id="saveCancelBtn">Cancel</button>
-          <button class="confirm" id="saveConfirmBtn">Save</button>
+          <button class="confirm" id="saveConfirmBtn">Save play</button>
         </div>
       </div>
     </div>
@@ -221,12 +386,82 @@
       </div>
     </div>
 
+    <div id="confirmCreateOverlay">
+      <div class="dialog-box">
+        <h3 id="confirmCreateTitle">Create new category?</h3>
+        <p id="confirmCreateBody" style="margin:0 0 14px; font-size:13px; color:var(--ink-dim); line-height:1.5;"></p>
+        <div class="close-matches" id="closeMatchesList" style="margin:10px 0; display:flex; flex-direction:column; gap:6px;"></div>
+        <div class="dialog-actions">
+          <button id="confirmCreateCancel">Cancel</button>
+          <button class="confirm" id="confirmCreateOk">Create it</button>
+        </div>
+      </div>
+    </div>
+
     <div id="libSheet">
       <header>
-        <h1>Play library</h1>
-        <button class="icon-btn" id="libCloseBtn">Done</button>
+        <div>
+          <h1>Play library</h1>
+          <div class="sub" id="libHeaderSub"></div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="icon-btn" id="manageCategoriesBtn" style="font-size:11px; padding:6px 8px; display:none;">Manage</button>
+          <button class="icon-btn" id="libCloseBtn">Done</button>
+        </div>
       </header>
+      <div class="tabs">
+        <div class="tab active" id="tabTeam">Team library</div>
+        <div class="tab" id="tabMine">My drafts</div>
+      </div>
+      <div id="filterBar">
+        <div class="filter-group">
+          <div class="filter-group-label">Phase</div>
+          <div class="chip-row" id="phaseChips"></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-group-label">Category</div>
+          <div class="chip-row" id="categoryChips"></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-group-label">Tags <span class="filter-clear" id="clearFiltersBtn">Clear all</span></div>
+          <div class="chip-row" id="tagChips"></div>
+        </div>
+      </div>
+      <div id="libSearchRow"><input type="text" id="libSearchInput" placeholder="Search plays by name"></div>
+      <div id="libResultCount"></div>
       <div id="libList"></div>
+    </div>
+
+    <div id="adminSheet">
+      <header>
+        <h1>Manage categories</h1>
+        <button class="icon-btn" id="adminCloseBtn">Done</button>
+      </header>
+      <div class="sub" style="padding:8px 14px 0; font-size:11.5px; color:var(--ink-dim);">Tap a category to reassign its plays or delete it.</div>
+      <div style="padding: 10px 14px 0;">
+        <div class="add-new-row" id="adminNewCategoryRow">
+          <input type="text" id="adminNewCategoryInput" placeholder="Name a new category">
+          <button id="adminAddCategoryBtn">Add</button>
+        </div>
+      </div>
+      <div id="adminList"></div>
+    </div>
+
+    <div id="adminDetail">
+      <header>
+        <h1 id="adminDetailTitle">Category</h1>
+        <button class="icon-btn" id="adminDetailBackBtn">Back</button>
+      </header>
+      <div class="reassign-row" id="selectAllRow" style="background: var(--panel-bg-2);">
+        <input type="checkbox" id="selectAllCheckbox">
+        <span class="play-name-small" style="font-weight:600; color: var(--ink-dim);">Select all</span>
+      </div>
+      <div style="flex:1; overflow-y:auto;" id="adminDetailList"></div>
+      <div id="moveToRow">
+        <label>Move checked plays to</label>
+        <select id="moveToSelect"></select>
+        <button class="icon-btn primary" id="moveToConfirmBtn" style="width:100%; justify-content:center;">Move selected plays</button>
+      </div>
     </div>
   </div>
 
@@ -264,6 +499,8 @@
       <button class="icon-btn" id="speedBtn">1x</button>
       <button class="icon-btn" id="rewindBtn">&#9664; Rewind</button>
     </div>
+  </div>
+
   </div>
 
 </div>
@@ -891,23 +1128,311 @@
   document.getElementById('resetPosBtn2').addEventListener('click', resetToStartPositions);
   document.getElementById('rewindBtn').addEventListener('click', rewindToPlayStart);
 
+  // ================= Supabase auth + API layer =================
+  // Configure these two values for your deployment. The URL and the
+  // PUBLISHABLE key are both safe to expose in frontend code — real
+  // access control lives in the database's row-level security policies
+  // and is double-checked server-side in the Netlify Functions. Never
+  // put the SECRET key here.
+  var SUPABASE_URL = 'https://oqzvyqnbrzlsbxrygjyo.supabase.co';
+  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_FyyQoQ3LW8RR3d62Rmi7cQ_hIfAXrJT';
+
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  var currentCoach = null; // { id, display_name, is_admin }
+  var currentSession = null;
+
+  async function apiCall(fnName, options){
+    options = options || {};
+    var headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+    if(currentSession && currentSession.access_token){
+      headers['Authorization'] = 'Bearer ' + currentSession.access_token;
+    }
+    var res = await fetch('/.netlify/functions/' + fnName + (options.query || ''), {
+      method: options.method || 'GET',
+      headers: headers,
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+    var data = null;
+    try{ data = await res.json(); }catch(e){}
+    if(!res.ok){
+      throw new Error((data && data.error) ? data.error : ('Request failed (' + res.status + ')'));
+    }
+    return data;
+  }
+
+  async function loadCoachProfile(){
+    var userRes = await sb.auth.getUser();
+    var user = userRes.data && userRes.data.user;
+    if(!user) return null;
+    var profileRes = await sb.from('coaches').select('id, display_name, is_admin').eq('id', user.id).single();
+    if(profileRes.error || !profileRes.data) return null;
+    return profileRes.data;
+  }
+
+  async function tryRestoreSession(){
+    var sessionRes = await sb.auth.getSession();
+    var session = sessionRes.data && sessionRes.data.session;
+    if(!session) return false;
+    currentSession = session;
+    var coach = await loadCoachProfile();
+    if(!coach) return false;
+    currentCoach = coach;
+    return true;
+  }
+
+  function showLoginScreen(){
+    document.getElementById('loginScreen').classList.remove('hide');
+    document.getElementById('appShell').style.display = 'none';
+  }
+  function showAppShell(){
+    document.getElementById('loginScreen').classList.add('hide');
+    document.getElementById('appShell').style.display = 'flex';
+    document.getElementById('manageCategoriesBtn').style.display = (currentCoach && currentCoach.is_admin) ? 'flex' : 'none';
+  }
+
+  document.getElementById('loginSubmitBtn').addEventListener('click', async function(){
+    var email = document.getElementById('loginEmail').value.trim();
+    var password = document.getElementById('loginPassword').value;
+    var errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    if(!email || !password){
+      errEl.textContent = 'Enter your email and password.';
+      errEl.style.display = 'block';
+      return;
+    }
+    try{
+      var res = await sb.auth.signInWithPassword({ email: email, password: password });
+      if(res.error) throw new Error(res.error.message);
+      currentSession = res.data.session;
+      var coach = await loadCoachProfile();
+      if(!coach){
+        errEl.textContent = 'Logged in, but no coach profile is set up for this account yet.';
+        errEl.style.display = 'block';
+        await sb.auth.signOut();
+        return;
+      }
+      currentCoach = coach;
+      showAppShell();
+      await loadLabelsFromServer();
+    }catch(err){
+      errEl.textContent = err.message || 'Login failed. Check your email and password.';
+      errEl.style.display = 'block';
+    }
+  });
+
+  // ================= Label (Phase/Category/Tag) cache =================
+  var LABELS = { phases: [], categories: [], tags: [] };
+
+  async function loadLabelsFromServer(){
+    var data = await apiCall('labels', { method: 'GET' });
+    LABELS = data;
+  }
+
+  function findLabel(kind, name){
+    var list = kind === 'phase' ? LABELS.phases : kind === 'category' ? LABELS.categories : LABELS.tags;
+    return list.filter(function(l){ return l.name.toLowerCase() === name.toLowerCase(); })[0];
+  }
+
+  // ================= Save dialog =================
   var saveDialog = document.getElementById('saveDialog');
+  var saveState = { phases: [], categories: [], tags: [], status: 'draft' };
+  var editingPlayId = null;
+
+  function renderPicker(containerId, options, selectedIds, chipClass){
+    var el = document.getElementById(containerId);
+    el.innerHTML = '';
+    options.forEach(function(opt){
+      var chip = document.createElement('div');
+      chip.className = 'picker-chip' + (selectedIds.indexOf(opt.id) > -1 ? ' selected ' + chipClass : '');
+      chip.textContent = opt.name;
+      chip.addEventListener('click', function(){
+        var idx = selectedIds.indexOf(opt.id);
+        if(idx > -1) selectedIds.splice(idx,1); else selectedIds.push(opt.id);
+        renderPicker(containerId, options, selectedIds, chipClass);
+        if(chipClass==='phase') document.getElementById('phaseError').classList.remove('show');
+        if(chipClass==='category') document.getElementById('categoryError').classList.remove('show');
+      });
+      el.appendChild(chip);
+    });
+  }
+
   function openSaveDialog(){
+    editingPlayId = null;
+    saveState = { phases: [], categories: [], tags: [], status: 'draft' };
     document.getElementById('saveNameInput').value = '';
+    document.getElementById('saveNameInput').style.borderColor = '';
+    document.getElementById('phaseError').classList.remove('show');
+    document.getElementById('categoryError').classList.remove('show');
+    renderPicker('phasePickerRow', LABELS.phases, saveState.phases, 'phase');
+    renderPicker('categoryPickerRow', LABELS.categories, saveState.categories, 'category');
+    renderPicker('tagPickerRow', LABELS.tags, saveState.tags, 'tag');
+    document.getElementById('statusDraftBtn').classList.add('selected');
+    document.getElementById('statusPublishedBtn').classList.remove('selected');
     saveDialog.classList.add('show');
     setTimeout(function(){ document.getElementById('saveNameInput').focus(); }, 50);
   }
   document.getElementById('saveBtn').addEventListener('click', openSaveDialog);
   document.getElementById('saveBtn2').addEventListener('click', openSaveDialog);
   document.getElementById('saveCancelBtn').addEventListener('click', function(){ saveDialog.classList.remove('show'); });
-  document.getElementById('saveConfirmBtn').addEventListener('click', function(){
-    var name = document.getElementById('saveNameInput').value.trim();
-    if(!name){
-      document.getElementById('saveNameInput').style.borderColor = 'var(--danger)';
+
+  document.getElementById('statusDraftBtn').addEventListener('click', function(){
+    saveState.status = 'draft';
+    this.classList.add('selected');
+    document.getElementById('statusPublishedBtn').classList.remove('selected');
+  });
+  document.getElementById('statusPublishedBtn').addEventListener('click', function(){
+    saveState.status = 'published';
+    this.classList.add('selected');
+    document.getElementById('statusDraftBtn').classList.remove('selected');
+  });
+
+  function findCloseMatches(query, list){
+    var q = query.trim().toLowerCase();
+    if(!q) return [];
+    return list.filter(function(l){
+      var n = l.name.toLowerCase();
+      return n.indexOf(q) > -1 || q.indexOf(n) > -1;
+    });
+  }
+
+  function renderCategorySuggestions(){
+    var input = document.getElementById('newCategoryInput');
+    var val = input.value.trim();
+    var listEl = document.getElementById('categorySuggestList');
+    listEl.innerHTML = '';
+    if(!val){ listEl.classList.remove('show'); return; }
+    var matches = findCloseMatches(val, LABELS.categories);
+    if(matches.length === 0){ listEl.classList.remove('show'); return; }
+    listEl.classList.add('show');
+    matches.forEach(function(l){
+      var item = document.createElement('div');
+      item.className = 'suggest-item';
+      item.innerHTML = '<span></span><span class="use-btn">Use this</span>';
+      item.querySelector('span').textContent = l.name;
+      item.addEventListener('click', function(){
+        if(saveState.categories.indexOf(l.id) === -1) saveState.categories.push(l.id);
+        input.value = '';
+        listEl.classList.remove('show');
+        renderPicker('categoryPickerRow', LABELS.categories, saveState.categories, 'category');
+        document.getElementById('categoryError').classList.remove('show');
+      });
+      listEl.appendChild(item);
+    });
+  }
+  document.getElementById('newCategoryInput').addEventListener('input', renderCategorySuggestions);
+
+  function openConfirmCreate(name, closeMatches, onUseExisting, onCreateNew){
+    document.getElementById('confirmCreateTitle').textContent = 'Create new category?';
+    document.getElementById('confirmCreateBody').textContent = 'No category called "'+name+'" yet.' +
+      (closeMatches.length ? ' Did you mean one of these instead?' : '');
+    document.getElementById('confirmCreateOk').textContent = 'Create it';
+    var listEl = document.getElementById('closeMatchesList');
+    listEl.innerHTML = '';
+    closeMatches.forEach(function(l){
+      var item = document.createElement('div');
+      item.className = 'suggest-item';
+      item.innerHTML = '<span></span><span class="use-btn">Use this</span>';
+      item.querySelector('span').textContent = l.name;
+      item.addEventListener('click', function(){
+        document.getElementById('confirmCreateOverlay').classList.remove('show');
+        onUseExisting(l);
+      });
+      listEl.appendChild(item);
+    });
+    document.getElementById('confirmCreateOverlay').classList.add('show');
+    document.getElementById('confirmCreateOk').onclick = async function(){
+      document.getElementById('confirmCreateOverlay').classList.remove('show');
+      try{
+        var res = await apiCall('labels', { method: 'POST', body: { kind: 'category', name: name } });
+        if(!LABELS.categories.some(function(l){ return l.id === res.label.id; })) LABELS.categories.push(res.label);
+        onCreateNew(res.label);
+      }catch(err){
+        showToast(err.message);
+      }
+    };
+  }
+  document.getElementById('confirmCreateCancel').addEventListener('click', function(){
+    document.getElementById('confirmCreateOverlay').classList.remove('show');
+  });
+
+  document.getElementById('addCategoryBtn').addEventListener('click', function(){
+    var input = document.getElementById('newCategoryInput');
+    var val = input.value.trim();
+    if(!val) return;
+    var exact = findLabel('category', val);
+    if(exact){
+      if(saveState.categories.indexOf(exact.id) === -1) saveState.categories.push(exact.id);
+      input.value = '';
+      document.getElementById('categorySuggestList').classList.remove('show');
+      renderPicker('categoryPickerRow', LABELS.categories, saveState.categories, 'category');
+      document.getElementById('categoryError').classList.remove('show');
       return;
     }
-    savePlay(name);
-    saveDialog.classList.remove('show');
+    var closeMatches = findCloseMatches(val, LABELS.categories);
+    function applyLabel(l){
+      if(saveState.categories.indexOf(l.id) === -1) saveState.categories.push(l.id);
+      renderPicker('categoryPickerRow', LABELS.categories, saveState.categories, 'category');
+      document.getElementById('categoryError').classList.remove('show');
+      input.value = '';
+      document.getElementById('categorySuggestList').classList.remove('show');
+    }
+    openConfirmCreate(val, closeMatches, applyLabel, applyLabel);
+  });
+
+  document.getElementById('addTagBtn').addEventListener('click', async function(){
+    var input = document.getElementById('newTagInput');
+    var val = input.value.trim();
+    if(!val) return;
+    var exact = findLabel('tag', val);
+    if(exact){
+      if(saveState.tags.indexOf(exact.id) === -1) saveState.tags.push(exact.id);
+      input.value = '';
+      renderPicker('tagPickerRow', LABELS.tags, saveState.tags, 'tag');
+      return;
+    }
+    try{
+      var res = await apiCall('labels', { method: 'POST', body: { kind: 'tag', name: val } });
+      if(!LABELS.tags.some(function(l){ return l.id === res.label.id; })) LABELS.tags.push(res.label);
+      if(saveState.tags.indexOf(res.label.id) === -1) saveState.tags.push(res.label.id);
+      input.value = '';
+      renderPicker('tagPickerRow', LABELS.tags, saveState.tags, 'tag');
+    }catch(err){
+      showToast(err.message);
+    }
+  });
+
+  document.getElementById('saveConfirmBtn').addEventListener('click', async function(){
+    var name = document.getElementById('saveNameInput').value.trim();
+    var ok = true;
+    if(!name){
+      document.getElementById('saveNameInput').style.borderColor = 'var(--danger)';
+      ok = false;
+    }
+    if(saveState.status === 'published'){
+      if(saveState.phases.length === 0){ document.getElementById('phaseError').classList.add('show'); ok = false; }
+      if(saveState.categories.length === 0){ document.getElementById('categoryError').classList.add('show'); ok = false; }
+    }
+    if(!ok) return;
+    var payload = {
+      name: name,
+      snapshot: snapshotState(),
+      phaseIds: saveState.phases,
+      categoryIds: saveState.categories,
+      tagIds: saveState.tags,
+      status: saveState.status
+    };
+    try{
+      if(editingPlayId){
+        payload.id = editingPlayId;
+        await apiCall('plays', { method: 'PUT', body: payload });
+      } else {
+        await apiCall('plays', { method: 'POST', body: payload });
+      }
+      saveDialog.classList.remove('show');
+      showToast('Saved "'+name+'"');
+    }catch(err){
+      showToast(err.message);
+    }
   });
 
   function snapshotState(){
@@ -915,63 +1440,6 @@
       tokens: state.tokens.map(function(t){ return {defId:t.defId, label:t.label, color:t.color, x:t.x, y:t.y, paths: t.paths||[]}; }),
       ball: state.ball ? {x:state.ball.x, y:state.ball.y, paths: state.ball.paths||[]} : null
     };
-  }
-
-  function savePlay(name){
-    var plays = loadPlays();
-    plays.push({ id: 'play'+Date.now(), name: name, savedAt: Date.now(), snapshot: snapshotState() });
-    persistPlays(plays);
-    showToast('Saved "'+name+'"');
-  }
-
-  function loadPlays(){
-    try{
-      var raw = localStorage.getItem('fieldCoachPlays');
-      return raw ? JSON.parse(raw) : [];
-    }catch(e){ return []; }
-  }
-  function persistPlays(plays){
-    try{ localStorage.setItem('fieldCoachPlays', JSON.stringify(plays)); }catch(e){}
-  }
-
-  var libSheet = document.getElementById('libSheet');
-  document.getElementById('libraryBtn').addEventListener('click', function(){
-    renderLibrary();
-    libSheet.classList.add('open');
-  });
-  document.getElementById('libCloseBtn').addEventListener('click', function(){
-    libSheet.classList.remove('open');
-  });
-
-  function renderLibrary(){
-    var plays = loadPlays();
-    var list = document.getElementById('libList');
-    list.innerHTML = '';
-    if(plays.length === 0){
-      list.innerHTML = '<div id="libEmpty">No saved plays yet.<br>Build one on the field, then tap Save.</div>';
-      return;
-    }
-    plays.slice().reverse().forEach(function(play){
-      var row = document.createElement('div');
-      row.className = 'lib-item';
-      var d = new Date(play.savedAt);
-      var dateStr = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
-      row.innerHTML = '<div class="meta"><div class="name"></div><div class="desc">Saved '+dateStr+'</div></div><div class="actions"><button class="load">Load</button><button class="del">Delete</button></div>';
-      row.querySelector('.name').textContent = play.name;
-      row.querySelector('.load').addEventListener('click', function(){
-        loadPlaySnapshot(play.snapshot);
-        libSheet.classList.remove('open');
-        showToast('Loaded "'+play.name+'"');
-      });
-      row.querySelector('.del').addEventListener('click', function(){
-        showConfirm('Delete "'+play.name+'"?', function(){
-          var all = loadPlays().filter(function(p){ return p.id !== play.id; });
-          persistPlays(all);
-          renderLibrary();
-        });
-      });
-      list.appendChild(row);
-    });
   }
 
   function loadPlaySnapshot(snap){
@@ -983,6 +1451,294 @@
     var ballPaths = snap.ball ? (snap.ball.paths || (snap.ball.path && snap.ball.path.length > 1 ? [snap.ball.path] : [])) : [];
     state.ball = snap.ball ? { x: snap.ball.x, y: snap.ball.y, paths: ballPaths } : null;
     renderTokens();
+  }
+
+  // ================= Library screen =================
+  var libSheet = document.getElementById('libSheet');
+  var libState = { tab: 'team', activePhases: [], activeCategories: [], activeTags: [], search: '', teamPlays: [], minePlays: [] };
+
+  document.getElementById('libraryBtn').addEventListener('click', async function(){
+    libSheet.classList.add('open');
+    await refreshLibrary();
+  });
+  document.getElementById('libCloseBtn').addEventListener('click', function(){
+    libSheet.classList.remove('open');
+  });
+
+  async function refreshLibrary(){
+    try{
+      var scope = libState.tab === 'mine' ? 'mine' : 'team';
+      var data = await apiCall('plays', { method: 'GET', query: '?scope=' + scope });
+      if(scope === 'mine') libState.minePlays = data.plays; else libState.teamPlays = data.plays;
+      renderLibraryFilters();
+      renderLibraryList();
+    }catch(err){
+      showToast(err.message);
+    }
+  }
+
+  function toggleInList(list, val){
+    var idx = list.indexOf(val);
+    if(idx > -1) list.splice(idx,1); else list.push(val);
+  }
+
+  function renderChipRow(containerId, options, activeList, chipClass){
+    var el = document.getElementById(containerId);
+    el.innerHTML = '';
+    options.forEach(function(opt){
+      var chip = document.createElement('div');
+      chip.className = 'chip' + (activeList.indexOf(opt.name) > -1 ? ' ' + (chipClass==='phase' ? 'phase-active' : 'active') : '');
+      chip.textContent = opt.name;
+      chip.addEventListener('click', function(){
+        toggleInList(activeList, opt.name);
+        renderLibraryList();
+        renderLibraryFilters();
+      });
+      el.appendChild(chip);
+    });
+  }
+
+  function renderLibraryFilters(){
+    renderChipRow('phaseChips', LABELS.phases, libState.activePhases, 'phase');
+    renderChipRow('categoryChips', LABELS.categories, libState.activeCategories, 'category');
+    renderChipRow('tagChips', LABELS.tags, libState.activeTags, 'tag');
+  }
+
+  function visibleLibraryPlays(){
+    var plays = libState.tab === 'mine' ? libState.minePlays : libState.teamPlays;
+    return plays.filter(function(p){
+      if(libState.activePhases.length && !libState.activePhases.some(function(ph){ return p.phases.indexOf(ph) > -1; })) return false;
+      if(libState.activeCategories.length && !libState.activeCategories.some(function(c){ return p.categories.indexOf(c) > -1; })) return false;
+      if(libState.activeTags.length && !libState.activeTags.some(function(t){ return p.tags.indexOf(t) > -1; })) return false;
+      if(libState.search && p.name.toLowerCase().indexOf(libState.search.toLowerCase()) === -1) return false;
+      return true;
+    });
+  }
+
+  function renderLibraryList(){
+    var plays = visibleLibraryPlays();
+    document.getElementById('libResultCount').textContent = plays.length + (plays.length===1 ? ' play' : ' plays');
+    var list = document.getElementById('libList');
+    list.innerHTML = '';
+    if(plays.length === 0){
+      list.innerHTML = '<div id="libEmpty">No plays match.<br>Build one on the field, then tap Save.</div>';
+      return;
+    }
+    plays.forEach(function(play){
+      var row = document.createElement('div');
+      row.className = 'lib-item';
+      var tagsHtml = '';
+      play.phases.forEach(function(t){ tagsHtml += '<span class="tag-pill phase"></span>'; });
+      play.categories.forEach(function(t){ tagsHtml += '<span class="tag-pill category"></span>'; });
+      play.tags.forEach(function(t){ tagsHtml += '<span class="tag-pill tag"></span>'; });
+      row.innerHTML =
+        '<div class="meta" style="flex:1;">' +
+          '<div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">' +
+            '<div class="name"></div>' +
+            '<span class="status-pill ' + play.status + '">' + play.status + '</span>' +
+          '</div>' +
+          '<div class="play-tags"></div>' +
+          '<div class="actions" style="margin-top:9px;"><button class="load">Load</button><button class="del" style="display:none;">Delete</button></div>' +
+        '</div>';
+      row.querySelector('.name').textContent = play.name;
+      var tagContainer = row.querySelector('.play-tags');
+      play.phases.forEach(function(t){ var s=document.createElement('span'); s.className='tag-pill phase'; s.textContent=t; tagContainer.appendChild(s); });
+      play.categories.forEach(function(t){ var s=document.createElement('span'); s.className='tag-pill category'; s.textContent=t; tagContainer.appendChild(s); });
+      play.tags.forEach(function(t){ var s=document.createElement('span'); s.className='tag-pill tag'; s.textContent=t; tagContainer.appendChild(s); });
+      row.querySelector('.load').addEventListener('click', function(){
+        loadPlaySnapshot(play.snapshot);
+        libSheet.classList.remove('open');
+        showToast('Loaded "'+play.name+'"');
+      });
+      var delBtn = row.querySelector('.del');
+      if(play.createdBy === currentCoach.id && play.status === 'draft'){
+        delBtn.style.display = '';
+        delBtn.addEventListener('click', function(){
+          showConfirm('Delete "'+play.name+'"?', async function(){
+            try{
+              await apiCall('plays', { method: 'DELETE', query: '?id=' + encodeURIComponent(play.id) });
+              await refreshLibrary();
+            }catch(err){
+              showToast(err.message);
+            }
+          });
+        });
+      }
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById('tabTeam').addEventListener('click', function(){
+    libState.tab = 'team';
+    document.getElementById('tabTeam').classList.add('active');
+    document.getElementById('tabMine').classList.remove('active');
+    document.getElementById('libHeaderSub').textContent = 'Published plays, everyone';
+    refreshLibrary();
+  });
+  document.getElementById('tabMine').addEventListener('click', function(){
+    libState.tab = 'mine';
+    document.getElementById('tabMine').classList.add('active');
+    document.getElementById('tabTeam').classList.remove('active');
+    document.getElementById('libHeaderSub').textContent = 'Your drafts and published plays';
+    refreshLibrary();
+  });
+  document.getElementById('libSearchInput').addEventListener('input', function(e){
+    libState.search = e.target.value;
+    renderLibraryList();
+  });
+  document.getElementById('clearFiltersBtn').addEventListener('click', function(){
+    libState.activePhases = []; libState.activeCategories = []; libState.activeTags = [];
+    renderLibraryFilters();
+    renderLibraryList();
+  });
+
+  // ================= Admin: manage categories =================
+  var adminSheet = document.getElementById('adminSheet');
+  var adminDetail = document.getElementById('adminDetail');
+  var adminDetailCat = null; // { id, name }
+
+  function categoryPlayCount(categoryName){
+    return libState.teamPlays.concat(libState.minePlays).filter(function(p){
+      return p.categories.indexOf(categoryName) > -1;
+    }).length;
+  }
+
+  async function refreshAllPlaysForAdmin(){
+    var teamRes = await apiCall('plays', { method: 'GET', query: '?scope=team' });
+    var mineRes = await apiCall('plays', { method: 'GET', query: '?scope=mine' });
+    libState.teamPlays = teamRes.plays;
+    libState.minePlays = mineRes.plays;
+  }
+
+  function renderAdminList(){
+    var list = document.getElementById('adminList');
+    list.innerHTML = '';
+    LABELS.categories.slice().sort(function(a,b){ return a.name.localeCompare(b.name); }).forEach(function(cat){
+      var count = categoryPlayCount(cat.name);
+      var row = document.createElement('div');
+      row.className = 'admin-row';
+      row.innerHTML = '<div><div class="name"></div><div class="count"></div></div><button>Manage</button>';
+      row.querySelector('.name').textContent = cat.name;
+      row.querySelector('.count').textContent = count + (count===1?' play':' plays');
+      row.querySelector('button').addEventListener('click', function(){ openAdminDetail(cat); });
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById('manageCategoriesBtn').addEventListener('click', async function(){
+    try{
+      await refreshAllPlaysForAdmin();
+      renderAdminList();
+      adminSheet.classList.add('open');
+    }catch(err){
+      showToast(err.message);
+    }
+  });
+  document.getElementById('adminCloseBtn').addEventListener('click', function(){
+    adminSheet.classList.remove('open');
+  });
+
+  document.getElementById('adminAddCategoryBtn').addEventListener('click', function(){
+    var input = document.getElementById('adminNewCategoryInput');
+    var val = input.value.trim();
+    if(!val) return;
+    var exact = findLabel('category', val);
+    if(exact){
+      input.value = '';
+      showToast('"'+exact.name+'" already exists.');
+      return;
+    }
+    var closeMatches = findCloseMatches(val, LABELS.categories);
+    function afterCreate(){
+      input.value = '';
+      renderAdminList();
+    }
+    openConfirmCreate(val, closeMatches, afterCreate, afterCreate);
+  });
+
+  function openAdminDetail(cat){
+    adminDetailCat = cat;
+    document.getElementById('adminDetailTitle').textContent = cat.name;
+    var plays = libState.teamPlays.concat(libState.minePlays).filter(function(p){
+      return p.categories.indexOf(cat.name) > -1;
+    });
+    var seen = {};
+    plays = plays.filter(function(p){ if(seen[p.id]) return false; seen[p.id]=true; return true; });
+    var listEl = document.getElementById('adminDetailList');
+    listEl.innerHTML = '';
+    var selectAllBox = document.getElementById('selectAllCheckbox');
+    selectAllBox.checked = false;
+    plays.forEach(function(p){
+      var row = document.createElement('div');
+      row.className = 'reassign-row';
+      row.innerHTML = '<input type="checkbox"><span class="play-name-small"></span>';
+      row.querySelector('input').setAttribute('data-play-id', p.id);
+      row.querySelector('.play-name-small').textContent = p.name;
+      var box = row.querySelector('input');
+      box.addEventListener('change', function(){
+        if(!box.checked){ selectAllBox.checked = false; }
+        else{
+          var allBoxes = listEl.querySelectorAll('input[type=checkbox]');
+          selectAllBox.checked = Array.prototype.every.call(allBoxes, function(b){ return b.checked; });
+        }
+      });
+      listEl.appendChild(row);
+    });
+    var select = document.getElementById('moveToSelect');
+    select.innerHTML = '';
+    LABELS.categories.filter(function(c){ return c.id !== cat.id; }).sort(function(a,b){ return a.name.localeCompare(b.name); }).forEach(function(c){
+      var opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+    adminDetail.classList.add('open');
+  }
+  document.getElementById('selectAllCheckbox').addEventListener('change', function(){
+    var checked = this.checked;
+    document.querySelectorAll('#adminDetailList input[type=checkbox]').forEach(function(box){ box.checked = checked; });
+  });
+  document.getElementById('adminDetailBackBtn').addEventListener('click', function(){
+    adminDetail.classList.remove('open');
+    renderAdminList();
+  });
+
+  document.getElementById('moveToConfirmBtn').addEventListener('click', async function(){
+    var checked = Array.prototype.slice.call(document.querySelectorAll('#adminDetailList input:checked'));
+    if(checked.length === 0) return;
+    var playIds = checked.map(function(box){ return box.getAttribute('data-play-id'); });
+    var targetId = document.getElementById('moveToSelect').value;
+    try{
+      var res = await apiCall('labels', { method: 'POST', body: { action: 'reassign', fromLabelId: adminDetailCat.id, toLabelId: targetId, playIds: playIds } });
+      adminDetail.classList.remove('open');
+      await refreshAllPlaysForAdmin();
+      renderAdminList();
+      if(res.remainingInSource === 0){
+        showDeleteEmptyPrompt(adminDetailCat);
+      }
+    }catch(err){
+      showToast(err.message);
+    }
+  });
+
+  function showDeleteEmptyPrompt(cat){
+    document.getElementById('confirmCreateTitle').textContent = '"'+cat.name+'" now has no plays';
+    document.getElementById('confirmCreateBody').textContent = 'Delete this category from the shared list, or keep it around for later?';
+    document.getElementById('closeMatchesList').innerHTML = '';
+    document.getElementById('confirmCreateOk').textContent = 'Delete category';
+    document.getElementById('confirmCreateOk').onclick = async function(){
+      try{
+        await apiCall('labels', { method: 'POST', body: { action: 'delete', labelId: cat.id } });
+        LABELS.categories = LABELS.categories.filter(function(c){ return c.id !== cat.id; });
+        document.getElementById('confirmCreateOverlay').classList.remove('show');
+        document.getElementById('confirmCreateOk').textContent = 'Create it';
+        renderAdminList();
+      }catch(err){
+        showToast(err.message);
+        document.getElementById('confirmCreateOverlay').classList.remove('show');
+        document.getElementById('confirmCreateOk').textContent = 'Create it';
+      }
+    };
+    document.getElementById('confirmCreateOverlay').classList.add('show');
   }
 
   var speeds = [0.5, 1, 1.5, 2];
@@ -1112,6 +1868,21 @@
   setMode('live');
 
   window.addEventListener('resize', function(){});
+
+  // ================= Boot: check for an existing session first =================
+  (async function boot(){
+    try{
+      var restored = await tryRestoreSession();
+      if(restored){
+        showAppShell();
+        await loadLabelsFromServer();
+      } else {
+        showLoginScreen();
+      }
+    }catch(err){
+      showLoginScreen();
+    }
+  })();
 })();
 </script>
 </body>
