@@ -498,6 +498,7 @@
       <button class="icon-btn primary wide" id="playBtn">&#9654; Play animation</button>
       <button class="icon-btn" id="speedBtn">1x</button>
       <button class="icon-btn" id="rewindBtn">&#9664; Rewind</button>
+      <button class="icon-btn wide" id="stepBtn">&#9655;&#124; Step through</button>
     </div>
   </div>
 
@@ -538,7 +539,11 @@
     nextInstanceId: 1,
     playbackSpeed: 1,
     playing: false,
-    lastPlayStart: null
+    lastPlayStart: null,
+    stepAnimated: null,
+    stepSlotCount: 0,
+    stepCurrentSlot: 0,
+    stepping: false
   };
 
   function uid(){ return 't' + (state.nextInstanceId++); }
@@ -908,6 +913,7 @@
     state.tokens = [];
     state.ball = null;
     renderTokens();
+    resetStepState();
     showToast('Field cleared');
   }
 
@@ -926,6 +932,7 @@
       }
     });
     renderTokens();
+    resetStepState();
     if(restored === 0){
       showToast('That play\u2019s players are no longer on the field');
     } else {
@@ -956,6 +963,7 @@
       state.ball.paths = [];
     }
     renderTokens();
+    resetStepState();
     showToast('Players reset to start positions');
   }
 
@@ -963,6 +971,7 @@
     state.tokens.forEach(function(t){ t.paths = []; });
     if(state.ball) state.ball.paths = [];
     renderPaths();
+    resetStepState();
     showToast('Paths cleared \u2014 drag players to redraw');
   }
 
@@ -983,6 +992,7 @@
     var top = candidates[0];
     top.obj.paths.splice(top.idx, 1);
     renderPaths();
+    resetStepState();
     showToast('Last segment removed');
   }
 
@@ -1808,37 +1818,24 @@
     runAnimation();
   });
 
-  function runAnimation(){
+  // Shared setup for both full Play and Step-through: finds every token/ball with
+  // recorded paths, snaps each back to the true start of its first segment (since
+  // dragging to record leaves a token sitting at that path's END point), and
+  // captures original positions for Rewind. Returns null (after toasting) if there's
+  // nothing recorded yet.
+  function prepareAnimation(){
     var all = state.tokens.slice();
     if(state.ball) all.push(state.ball);
     var animated = all.filter(function(o){ return o.paths && o.paths.length > 0; });
     if(animated.length === 0){
       showToast('No paths recorded \u2014 use Record mode first');
-      return;
+      return null;
     }
-    state.playing = true;
-    var btn = document.getElementById('playBtn');
-    btn.classList.add('playing');
-    btn.innerHTML = '\u25A0 Playing\u2026';
-
-    // Slot timing is keyed by each token's own segment index (0, 1, 2...), not global
-    // recording order. That means every token's FIRST recorded move plays together in
-    // slot 0 (true simultaneous, real-time motion), and only a token with a second
-    // recorded move (like a ball rolled then thrown) advances into slot 1, while
-    // everyone else simply holds their end position during that slot.
-    var slotCount = animated.reduce(function(max,o){ return Math.max(max, o.paths.length); }, 0);
-    var slotDuration = 1400 / state.playbackSpeed;
-    var totalDuration = slotCount * slotDuration;
-
-    // Each token/ball is currently sitting wherever the LAST recording drag left it
-    // (that's how paths get drawn). Before playing, snap everything back to the start
-    // of its first recorded segment, so playback animates the full move from true start
-    // to finish, and so Rewind has the correct original position to restore.
     animated.forEach(function(o){
-      var orderedSegs = o.paths.slice().sort(function(a,b){ return (a._order||0)-(b._order||0); });
-      if(orderedSegs.length && orderedSegs[0].length){
-        o.x = orderedSegs[0][0][0];
-        o.y = orderedSegs[0][0][1];
+      o._orderedSegs = o.paths.slice().sort(function(a,b){ return (a._order||0)-(b._order||0); });
+      if(o._orderedSegs.length && o._orderedSegs[0].length){
+        o.x = o._orderedSegs[0][0][0];
+        o.y = o._orderedSegs[0][0][1];
       }
     });
     renderTokens();
@@ -1847,9 +1844,12 @@
       return { instId: (o===state.ball ? 'ball' : o.instId), ox:o.x, oy:o.y };
     });
     state.lastPlayStart = origPositions;
-    var start = null;
 
-    function pointAlongPath(path, t){
+    var slotCount = animated.reduce(function(max,o){ return Math.max(max, o.paths.length); }, 0);
+    return { animated: animated, slotCount: slotCount };
+  }
+
+  function pointAlongPath(path, t){
       var totalLen = 0;
       var segLens = [];
       for(var i=1;i<path.length;i++){
@@ -1873,13 +1873,28 @@
       return path[path.length-1];
     }
 
+  function runAnimation(){
+    var prep = prepareAnimation();
+    if(!prep) return;
+    var animated = prep.animated, slotCount = prep.slotCount;
+    resetStepState();
+
+    state.playing = true;
+    var btn = document.getElementById('playBtn');
+    btn.classList.add('playing');
+    btn.innerHTML = '\u25A0 Playing\u2026';
+
+    var slotDuration = 1400 / state.playbackSpeed;
+    var totalDuration = slotCount * slotDuration;
+    var start = null;
+
     function frame(ts){
       if(!start) start = ts;
       var elapsed = ts - start;
       var overallT = Math.min(1, elapsed/totalDuration);
 
       animated.forEach(function(o){
-        var orderedSegs = o.paths.slice().sort(function(a,b){ return (a._order||0)-(b._order||0); });
+        var orderedSegs = o._orderedSegs;
         var currentPos = null;
         for(var i=0;i<orderedSegs.length;i++){
           var seg = orderedSegs[i];
@@ -1915,6 +1930,85 @@
     }
     requestAnimationFrame(frame);
   }
+
+  // ---- Step-through: advance one "beat" (slot) at a time, waiting for a click
+  // before moving to the next. Reuses the same slot/segment model as full Play,
+  // so stepping and full playback always end up in the same place.
+  function updateStepBtn(){
+    var btn = document.getElementById('stepBtn');
+    if(!state.stepAnimated){
+      btn.innerHTML = '\u25B7| Step through';
+    } else if(state.stepCurrentSlot >= state.stepSlotCount){
+      btn.innerHTML = '\u25B7| Step (done)';
+    } else {
+      btn.innerHTML = '\u25B7| Step ' + (state.stepCurrentSlot+1) + '/' + state.stepSlotCount;
+    }
+  }
+
+  function resetStepState(){
+    state.stepAnimated = null;
+    state.stepSlotCount = 0;
+    state.stepCurrentSlot = 0;
+    state.stepping = false;
+    updateStepBtn();
+  }
+
+  function stepForward(){
+    if(state.stepping || state.playing) return;
+
+    // First click of a fresh step-through: prepare just like Play does.
+    if(!state.stepAnimated){
+      var prep = prepareAnimation();
+      if(!prep) return;
+      state.stepAnimated = prep.animated;
+      state.stepSlotCount = prep.slotCount;
+      state.stepCurrentSlot = 0;
+      updateStepBtn();
+      showToast('Ready — press Step again to play move 1');
+      return; // first click just resets to the start position; next click plays slot 0
+    }
+
+    if(state.stepCurrentSlot >= state.stepSlotCount){
+      showToast('Step-through complete \u2014 press Rewind to start over');
+      return;
+    }
+
+    var animated = state.stepAnimated;
+    var slotIdx = state.stepCurrentSlot;
+    var slotDuration = 900 / state.playbackSpeed;
+    state.stepping = true;
+    var start = null;
+
+    function frame(ts){
+      if(!start) start = ts;
+      var elapsed = ts - start;
+      var t = Math.min(1, elapsed/slotDuration);
+
+      animated.forEach(function(o){
+        var orderedSegs = o._orderedSegs;
+        if(slotIdx >= orderedSegs.length){
+          return; // this token has no move in this slot; holds its current position
+        }
+        var seg = orderedSegs[slotIdx];
+        var pos = pointAlongPath(seg, t);
+        o.x = pos[0];
+        o.y = pos[1];
+      });
+      renderTokens();
+      renderPaths();
+      if(t < 1){
+        requestAnimationFrame(frame);
+      } else {
+        state.stepping = false;
+        state.stepCurrentSlot++;
+        updateStepBtn();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  document.getElementById('stepBtn').addEventListener('click', stepForward);
+  updateStepBtn();
 
   drawField();
   DEFENSE_IDS.forEach(function(id){ addToken(id, null, null, true); });
