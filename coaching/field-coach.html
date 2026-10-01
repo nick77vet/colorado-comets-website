@@ -540,8 +540,7 @@
     playbackSpeed: 1,
     playing: false,
     lastPlayStart: null,
-    stepAnimated: null,
-    stepSlotCount: 0,
+    stepQueue: null,
     stepCurrentSlot: 0,
     stepping: false
   };
@@ -1931,23 +1930,25 @@
     requestAnimationFrame(frame);
   }
 
-  // ---- Step-through: advance one "beat" (slot) at a time, waiting for a click
-  // before moving to the next. Reuses the same slot/segment model as full Play,
-  // so stepping and full playback always end up in the same place.
+  // ---- Step-through: advance ONE RECORDED SEGMENT at a time, in the exact
+  // order it was recorded (each segment's global _order), regardless of which
+  // player/ball it belongs to. Click 1 plays whichever move was recorded
+  // first (e.g. the ball), click 2 plays whichever was recorded second (e.g.
+  // the 1B throw), and so on — a different grouping than full Play, which
+  // plays everyone's Nth move together in real time.
   function updateStepBtn(){
     var btn = document.getElementById('stepBtn');
-    if(!state.stepAnimated){
+    if(!state.stepQueue){
       btn.innerHTML = '\u25B7| Step through';
-    } else if(state.stepCurrentSlot >= state.stepSlotCount){
+    } else if(state.stepCurrentSlot >= state.stepQueue.length){
       btn.innerHTML = '\u25B7| Step (done)';
     } else {
-      btn.innerHTML = '\u25B7| Step ' + (state.stepCurrentSlot+1) + '/' + state.stepSlotCount;
+      btn.innerHTML = '\u25B7| Step ' + (state.stepCurrentSlot+1) + '/' + state.stepQueue.length;
     }
   }
 
   function resetStepState(){
-    state.stepAnimated = null;
-    state.stepSlotCount = 0;
+    state.stepQueue = null;
     state.stepCurrentSlot = 0;
     state.stepping = false;
     updateStepBtn();
@@ -1956,44 +1957,44 @@
   function stepForward(){
     if(state.stepping || state.playing) return;
 
-    // First click of a fresh step-through: prepare just like Play does.
-    if(!state.stepAnimated){
+    // First click of a fresh step-through: snap everything back to its true
+    // starting position (same prep Play does) and build the flat, globally-
+    // ordered queue of individual segments to walk through one at a time.
+    if(!state.stepQueue){
       var prep = prepareAnimation();
       if(!prep) return;
-      state.stepAnimated = prep.animated;
-      state.stepSlotCount = prep.slotCount;
+      var queue = [];
+      prep.animated.forEach(function(o){
+        o._orderedSegs.forEach(function(seg){
+          queue.push({ obj: o, seg: seg, order: seg._order || 0 });
+        });
+      });
+      queue.sort(function(a,b){ return a.order - b.order; });
+      state.stepQueue = queue;
       state.stepCurrentSlot = 0;
       updateStepBtn();
-      showToast('Ready — press Step again to play move 1');
-      return; // first click just resets to the start position; next click plays slot 0
+      showToast(queue.length ? 'Ready \u2014 press Step again for move 1' : 'No recorded moves');
+      return;
     }
 
-    if(state.stepCurrentSlot >= state.stepSlotCount){
+    if(state.stepCurrentSlot >= state.stepQueue.length){
       showToast('Step-through complete \u2014 press Rewind to start over');
       return;
     }
 
-    var animated = state.stepAnimated;
-    var slotIdx = state.stepCurrentSlot;
-    var slotDuration = 900 / state.playbackSpeed;
+    var item = state.stepQueue[state.stepCurrentSlot];
+    var obj = item.obj, seg = item.seg;
+    var duration = 900 / state.playbackSpeed;
     state.stepping = true;
     var start = null;
 
     function frame(ts){
       if(!start) start = ts;
       var elapsed = ts - start;
-      var t = Math.min(1, elapsed/slotDuration);
-
-      animated.forEach(function(o){
-        var orderedSegs = o._orderedSegs;
-        if(slotIdx >= orderedSegs.length){
-          return; // this token has no move in this slot; holds its current position
-        }
-        var seg = orderedSegs[slotIdx];
-        var pos = pointAlongPath(seg, t);
-        o.x = pos[0];
-        o.y = pos[1];
-      });
+      var t = Math.min(1, elapsed/duration);
+      var pos = pointAlongPath(seg, t);
+      obj.x = pos[0];
+      obj.y = pos[1];
       renderTokens();
       renderPaths();
       if(t < 1){
