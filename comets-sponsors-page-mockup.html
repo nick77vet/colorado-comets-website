@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="robots" content="noindex">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sponsor the Comets | Colorado Comets Baseball</title>
@@ -129,7 +128,7 @@
 
   /* TIERS */
   .tiers {
-    padding: 24px 24px 88px;
+    padding: 80px 24px 88px;
     background: var(--cream);
   }
   .tiers h2 { font-size: 2rem; margin-bottom: 8px; }
@@ -196,6 +195,37 @@
     width: fit-content;
   }
 
+
+  /* TOURNAMENT SPONSORSHIP */
+  .tourney {
+    background: var(--black);
+    color: var(--cream);
+    padding: 80px 24px;
+  }
+  .tourney h2 { font-size: 2rem; margin-bottom: 8px; }
+  .tourney .sub { color: var(--cream-dim); max-width: 56ch; margin-bottom: 40px; font-size: 1.05rem; }
+  .tourney-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 48px;
+    max-width: 860px;
+  }
+  .tourney-opt {
+    border-left: 4px solid var(--orange);
+    padding-left: 22px;
+  }
+  .tourney-opt h3 { font-size: 1.35rem; }
+  .tourney-opt .price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--orange);
+    margin: 4px 0 10px;
+  }
+  .tourney-opt p { color: var(--cream-dim); font-size: 1.02rem; max-width: 36ch; }
+  .tourney-note { margin-top: 36px; color: var(--cream-dim); font-size: 0.98rem; max-width: 62ch; }
+  @media (max-width: 700px) { .tourney-grid { grid-template-columns: 1fr; gap: 32px; } }
+
   /* CURRENT SPONSORS */
   .sponsors-section {
     background: var(--white);
@@ -248,7 +278,7 @@
   .how h2 { font-size: 2rem; margin-bottom: 40px; }
   .how-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: minmax(0, 640px);
     gap: 48px;
     align-items: start;
   }
@@ -353,54 +383,6 @@
     </div>
   </section>
 
-  <section class="tiers" id="tiers">
-    <div class="wrap">
-      <h2>Sponsorship tiers</h2>
-      <p class="sub">A one-time or annual commitment. Every tier gets your business in front of Comets families at every game.</p>
-      <div class="tier-grid">
-
-        <div class="tier-card">
-          <div class="tier-name">Bronze</div>
-          <div class="tier-price">$100 - $250</div>
-          <ul class="tier-list">
-            <li><span class="mark">✓</span> Logo on team website</li>
-            <li><span class="mark">✓</span> Logo on team banner, bottom row, standard size</li>
-          </ul>
-        </div>
-
-        <div class="tier-card">
-          <div class="tier-name">Silver</div>
-          <div class="tier-price">$250+</div>
-          <ul class="tier-list">
-            <li><span class="mark">✓</span> Logo on team website</li>
-            <li><span class="mark">✓</span> Logo on team banner, row above Bronze</li>
-          </ul>
-        </div>
-
-        <div class="tier-card">
-          <div class="tier-name">Gold</div>
-          <div class="tier-price">$500+</div>
-          <ul class="tier-list">
-            <li><span class="mark">✓</span> Logo on team website</li>
-            <li><span class="mark">✓</span> Logo on team banner, row above Silver, larger size</li>
-          </ul>
-        </div>
-
-        <div class="tier-card platinum">
-          <span class="tier-tag">Most visibility</span>
-          <div class="tier-name">Platinum</div>
-          <div class="tier-price">$1,000+</div>
-          <ul class="tier-list">
-            <li><span class="mark">✓</span> Logo on team website</li>
-            <li><span class="mark">✓</span> Top row of the team banner, largest size</li>
-            <li><span class="mark">✓</span> Logo patch on team player bags</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <section class="sponsors-section">
     <div class="wrap">
       <h2>Our current sponsors</h2>
@@ -444,6 +426,74 @@
     </div>
   </section>
 
+  <section class="tiers" id="tiers">
+    <div class="wrap">
+      <h2>Sponsorship tiers</h2>
+      <p class="sub">A one-time or annual commitment. Every tier gets your business in front of Comets families at every game.</p>
+      <div class="tier-grid">
+
+        <div class="tier-card">
+          <div class="tier-name">Bronze</div>
+          <div class="tier-price">$100+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, bottom row, standard size</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-name">Silver</div>
+          <div class="tier-price">$250+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, row above Bronze</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-name">Gold</div>
+          <div class="tier-price">$500+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, row above Silver, larger size</li>
+          </ul>
+        </div>
+
+        <div class="tier-card platinum">
+          <span class="tier-tag">Most visibility</span>
+          <div class="tier-name">Platinum</div>
+          <div class="tier-price">$1,000+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Top row of the team banner, largest size</li>
+            <li><span class="mark">✓</span> Logo patch on team player bags</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="tourney" id="tournaments">
+    <div class="wrap">
+      <h2>Sponsor a tournament</h2>
+      <p class="sub">Prefer to back a single event? Cover all or part of a tournament and be featured at that event.</p>
+      <div class="tourney-grid">
+        <div class="tourney-opt">
+          <h3>Full tournament sponsor</h3>
+          <div class="price">$795+</div>
+          <p>Covers one tournament's full registration cost. Solo, large logo placement on our tournament banner for that event.</p>
+        </div>
+        <div class="tourney-opt">
+          <h3>Tournament co-sponsor</h3>
+          <div class="price">$200+</div>
+          <p>Help cover a tournament alongside other sponsors. Logo placement on our tournament banner for that event.</p>
+        </div>
+      </div>
+      <p class="tourney-note">Our tournament banner uses swappable logo panels, so sponsors are featured at the specific event they support.</p>
+    </div>
+  </section>
+
   <section class="how">
     <div class="wrap how-grid">
       <div>
@@ -452,49 +502,34 @@
           <div class="how-step">
             <div class="dot">1</div>
             <div>
-              <h3>Pick a tier</h3>
-              <p>Choose Bronze, Silver, Gold, or Platinum based on the visibility that fits your business.</p>
+              <h3>Pick a sponsorship</h3>
+              <p>Choose a season tier, or sponsor a tournament, based on the visibility that fits your business.</p>
             </div>
           </div>
           <div class="how-step">
             <div class="dot">2</div>
             <div>
-              <h3>Send payment</h3>
-              <p>Pay by Zelle, or by check made out to Colorado Comets Baseball.</p>
+              <h3>Reach out to us</h3>
+              <p>Email us with the tier or tournament you are interested in. We will answer your questions and send payment details.</p>
             </div>
           </div>
           <div class="how-step">
             <div class="dot">3</div>
             <div>
               <h3>We handle the rest</h3>
-              <p>We'll add your logo to the site and banner, and confirm your tier by email.</p>
+              <p>Once payment is received, we add your logo to the site and banner and confirm your placement by email.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="pay-card">
-        <h3>Payment options</h3>
-        <div class="pay-option">
-          <div>
-            <div class="name">Zelle</div>
-            <div class="detail">Send to info@cometbaseball.com</div>
-          </div>
-        </div>
-        <div class="qr-note">[ QR code placeholder, links to Zelle payment ]</div>
-        <div class="pay-option">
-          <div>
-            <div class="name">Check</div>
-            <div class="detail">Payable to Colorado Comets Baseball</div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
   <section class="contact-strip" id="contact">
-    <h2>Questions before you sponsor?</h2>
-    <p><a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a></p>
+    <h2>Interested in sponsoring the Comets?</h2>
+    <p>Reach out and we will help you choose the right fit.</p>
+    <p style="margin-top:8px"><a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a></p>
   </section>
 
 </body>
