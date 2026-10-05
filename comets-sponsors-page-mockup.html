@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponsor the Comets | Colorado Comets Baseball</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F25C05;
+    --black: #0A0A0A;
+    --cream: #F2E6D0;
+    --cream-dim: #e8d9bc;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    line-height: 1.5;
+  }
+  h1, h2, h3, .display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.02;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* HERO */
+  /* To swap the hero photo, replace images/sponsor-hero.jpg in the site repo.
+     If the file is missing, the hero falls back to solid black. */
+  .hero {
+    --hero-photo: url("images/sponsor-hero.jpg");
+    background:
+      linear-gradient(90deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.78) 45%, rgba(10,10,10,0.35) 100%),
+      var(--hero-photo) center / cover no-repeat,
+      var(--black);
+    color: var(--cream);
+    padding: 96px 24px 88px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--orange), #C94A1F 55%, transparent);
+  }
+  @media (max-width: 700px) {
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.8) 100%),
+        var(--hero-photo) center / cover no-repeat,
+        var(--black);
+    }
+  }
+  .hero .eyebrow {
+    color: var(--orange);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    max-width: 11ch;
+    position: relative;
+  }
+  .hero p {
+    max-width: 52ch;
+    font-size: 1.18rem;
+    color: var(--cream-dim);
+    margin-top: 22px;
+    position: relative;
+  }
+  .hero .cta-row {
+    margin-top: 36px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .btn {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 1.05rem;
+    padding: 15px 30px;
+    border-radius: 3px;
+    text-decoration: none;
+    border: 2px solid transparent;
+  }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-ghost { border-color: var(--cream-dim); color: var(--cream); }
+
+  /* WHY */
+  .why {
+    padding: 72px 24px;
+    background: var(--cream);
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 40px;
+  }
+  .why-stat .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .why-stat .label {
+    font-size: 1.02rem;
+    margin-top: 8px;
+    max-width: 26ch;
+  }
+  .why h2 { font-size: 2rem; max-width: 20ch; }
+
+  /* TIERS */
+  .tiers {
+    padding: 24px 24px 88px;
+    background: var(--cream);
+  }
+  .tiers h2 { font-size: 2rem; margin-bottom: 8px; }
+  .tiers .sub { color: #4a4238; max-width: 56ch; margin-bottom: 44px; font-size: 1.05rem; }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+  .tier-card {
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 4px;
+    padding: 32px 26px;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier-card.platinum {
+    background: var(--black);
+    color: var(--cream);
+    border-color: var(--black);
+    transform: translateY(-14px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  }
+  .tier-name {
+    font-size: 1.7rem;
+    letter-spacing: 0.02em;
+  }
+  .tier-card.platinum .tier-name { color: var(--orange); }
+  .tier-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.6rem;
+    margin: 6px 0 22px;
+  }
+  .tier-card:not(.platinum) .tier-price { color: var(--orange); }
+  .tier-list {
+    list-style: none;
+    flex-grow: 1;
+    font-size: 1.0rem;
+  }
+  .tier-list li {
+    padding: 11px 0;
+    border-top: 1px solid rgba(10,10,10,0.12);
+    display: flex;
+    gap: 10px;
+  }
+  .tier-card.platinum .tier-list li { border-top: 1px solid rgba(242,230,208,0.18); }
+  .tier-list li:first-child { border-top: none; }
+  .tier-list .mark { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+  .tier-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: var(--orange);
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+    width: fit-content;
+  }
+
+  /* CURRENT SPONSORS */
+  .sponsors-section {
+    background: var(--white);
+    padding: 80px 24px;
+  }
+  .sponsors-section h2 { font-size: 2rem; }
+  .sponsor-wall {
+    margin-top: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .sponsor-row { }
+  .sponsor-row .row-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    color: #9c8f77;
+    margin-bottom: 10px;
+  }
+  .sponsor-row .slots {
+    display: grid;
+    gap: 16px;
+  }
+  .row-platinum .slots { grid-template-columns: repeat(2, 1fr); }
+  .row-gold .slots { grid-template-columns: repeat(3, 1fr); }
+  .row-silver .slots { grid-template-columns: repeat(4, 1fr); }
+  .row-bronze .slots { grid-template-columns: repeat(6, 1fr); }
+
+  .logo-slot {
+    aspect-ratio: 3/2;
+    border: 2px dashed #cfc3ab;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9c8f77;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 10px;
+  }
+  .row-platinum .logo-slot { border-color: var(--orange); color: var(--orange); font-weight: 600; }
+
+  /* HOW TO PAY */
+  .how {
+    background: var(--cream);
+    padding: 80px 24px 96px;
+  }
+  .how h2 { font-size: 2rem; margin-bottom: 40px; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .how-steps { display: flex; flex-direction: column; gap: 26px; }
+  .how-step { display: flex; gap: 18px; }
+  .how-step .dot {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--black);
+    color: var(--orange);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .how-step h3 { font-size: 1.15rem; text-transform: none; font-weight: 700; margin-bottom: 4px; }
+  .how-step p { font-size: 0.98rem; color: #4a4238; }
+
+  .pay-card {
+    background: var(--white);
+    border-radius: 4px;
+    padding: 30px;
+    border: 2px solid var(--black);
+  }
+  .pay-card h3 { text-transform: none; font-size: 1.2rem; margin-bottom: 18px; }
+  .pay-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid rgba(10,10,10,0.12);
+  }
+  .pay-option:first-of-type { border-top: none; }
+  .pay-option .name { font-weight: 600; }
+  .pay-option .detail { font-size: 0.9rem; color: #6b5f4f; }
+  .qr-note {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #6b5f4f;
+  }
+
+  /* CONTACT STRIP */
+  .contact-strip {
+    background: var(--orange);
+    color: var(--white);
+    padding: 44px 24px;
+    text-align: center;
+  }
+  .contact-strip h2 {
+    color: var(--white);
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+  }
+  .contact-strip a { color: var(--white); text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .tier-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 800px) {
+    .why-grid, .how-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .tier-grid { grid-template-columns: 1fr; }
+    .tier-card.platinum { transform: none; order: -1; }
+    .row-platinum .slots { grid-template-columns: repeat(2, 1fr); }
+    .row-gold .slots, .row-silver .slots { grid-template-columns: repeat(3, 1fr); }
+    .row-bronze .slots { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Colorado Comets Baseball</div>
+      <h1>Put your business behind our team.</h1>
+      <p>The Comets are a Northern Colorado travel baseball team built around player development and strong character. Team sponsors help cover tournament fees and equipment costs, keeping the game affordable for our players' families.</p>
+      <div class="cta-row">
+        <a href="#tiers" class="btn btn-primary">See sponsor tiers</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="wrap">
+      <h2>Why local businesses back the Comets</h2>
+      <div class="why-grid">
+        <div class="why-stat">
+          <div class="num">11</div>
+          <div class="label">Rostered players and families, all local to Northern Colorado</div>
+        </div>
+        <div class="why-stat">
+          <div class="num">30+</div>
+          <div class="label">Games and tournament appearances across the season</div>
+        </div>
+        <div class="why-stat">
+          <div class="num">100%</div>
+          <div class="label">Of sponsorship funds go directly to team costs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tiers" id="tiers">
+    <div class="wrap">
+      <h2>Sponsorship tiers</h2>
+      <p class="sub">A one-time or annual commitment. Every tier gets your business in front of Comets families at every game.</p>
+      <div class="tier-grid">
+
+        <div class="tier-card">
+          <div class="tier-name">Bronze</div>
+          <div class="tier-price">$100 - $250</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, bottom row, standard size</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-name">Silver</div>
+          <div class="tier-price">$250+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, row above Bronze</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-name">Gold</div>
+          <div class="tier-price">$500+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Logo on team banner, row above Silver, larger size</li>
+          </ul>
+        </div>
+
+        <div class="tier-card platinum">
+          <span class="tier-tag">Most visibility</span>
+          <div class="tier-name">Platinum</div>
+          <div class="tier-price">$1,000+</div>
+          <ul class="tier-list">
+            <li><span class="mark">✓</span> Logo on team website</li>
+            <li><span class="mark">✓</span> Top row of the team banner, largest size</li>
+            <li><span class="mark">✓</span> Logo patch on team player bags</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sponsors-section">
+    <div class="wrap">
+      <h2>Our current sponsors</h2>
+      <div class="sponsor-wall">
+        <div class="sponsor-row row-platinum">
+          <div class="row-label">PLATINUM</div>
+          <div class="slots">
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+          </div>
+        </div>
+        <div class="sponsor-row row-gold">
+          <div class="row-label">GOLD</div>
+          <div class="slots">
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+          </div>
+        </div>
+        <div class="sponsor-row row-silver">
+          <div class="row-label">SILVER</div>
+          <div class="slots">
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+          </div>
+        </div>
+        <div class="sponsor-row row-bronze">
+          <div class="row-label">BRONZE</div>
+          <div class="slots">
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+            <div class="logo-slot">Your logo here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap how-grid">
+      <div>
+        <h2>How it works</h2>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="dot">1</div>
+            <div>
+              <h3>Pick a tier</h3>
+              <p>Choose Bronze, Silver, Gold, or Platinum based on the visibility that fits your business.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="dot">2</div>
+            <div>
+              <h3>Send payment</h3>
+              <p>Pay by Zelle, or by check made out to Colorado Comets Baseball.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="dot">3</div>
+            <div>
+              <h3>We handle the rest</h3>
+              <p>We'll add your logo to the site and banner, and confirm your tier by email.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-card">
+        <h3>Payment options</h3>
+        <div class="pay-option">
+          <div>
+            <div class="name">Zelle</div>
+            <div class="detail">Send to info@cometbaseball.com</div>
+          </div>
+        </div>
+        <div class="qr-note">[ QR code placeholder, links to Zelle payment ]</div>
+        <div class="pay-option">
+          <div>
+            <div class="name">Check</div>
+            <div class="detail">Payable to Colorado Comets Baseball</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-strip" id="contact">
+    <h2>Questions before you sponsor?</h2>
+    <p><a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a></p>
+  </section>
+
+</body>
+</html>
