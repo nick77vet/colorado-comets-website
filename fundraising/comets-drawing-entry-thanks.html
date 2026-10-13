@@ -34,9 +34,32 @@
   .fine { background: var(--black); color: var(--cream-dim); padding: 32px 24px 40px; font-size: 0.9rem; }
   .fine p { max-width: 90ch; margin-bottom: 10px; }
   .fine a { color: var(--cream); }
+
+  /* SITE HEADER AND FOOTER */
+  .site-header { background: #0A0A0A; border-bottom: 4px solid #F25C05; }
+  .site-header .bar { max-width: 1020px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .site-header img { height: 56px; width: auto; display: block; }
+  .site-nav a { color: #F2E6D0; text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem; margin-left: 22px; }
+  .site-nav a:hover { color: #F25C05; }
+  .site-footer { background: #0A0A0A; color: #e8d9bc; text-align: center; padding: 36px 24px 40px; border-top: 4px solid #F25C05; }
+  .site-footer img { height: 80px; width: auto; display: block; margin: 0 auto 16px; }
+  .site-footer .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; margin-bottom: 14px; }
+  .site-footer .links a { color: #F2E6D0; text-decoration: none; font-weight: 500; }
+  .site-footer .links a:hover { color: #F25C05; }
+  .site-footer .tag { font-size: 0.95rem; color: #e8d9bc; }
+  .fine { border-bottom: 1px solid rgba(232,217,188,0.2); }
 </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="bar">
+      <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="https://cometbaseball.com/">Home</a><a href="https://cometbaseball.com/about">About</a><a href="https://cometbaseball.com/register">Register</a>
+      </nav>
+    </div>
+  </header>
+
 
   <section class="hero">
     <div class="wrap">
@@ -59,5 +82,14 @@
     </div>
   </section>
 
+
+  <footer class="site-footer">
+    <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="links">
+      <a href="https://www.cometbaseball.com">&#127760; cometbaseball.com</a>
+      <a href="mailto:info@cometbaseball.com">&#9993;&#65039; info@cometbaseball.com</a>
+    </div>
+    <p class="tag"><em>Developing Confident Athletes</em> Through Baseball.</p>
+  </footer>
 </body>
 </html>
