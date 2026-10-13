@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comets Prize Drawing | Colorado Comets Baseball</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F25C05;
+    --rust: #C94A1F;
+    --black: #0A0A0A;
+    --cream: #F2E6D0;
+    --cream-dim: #e8d9bc;
+    --white: #ffffff;
+    --ink: #2b2621;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--cream); color: var(--black); line-height: 1.5; }
+  h1, h2, h3, .display { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+  /* HERO */
+  .hero { background: var(--black); color: var(--cream); padding: 72px 24px 64px; position: relative; overflow: hidden; }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--orange), var(--rust) 55%, transparent); }
+  .hero .eyebrow { color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.06em; margin-bottom: 12px; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); max-width: 14ch; }
+  .hero p { max-width: 54ch; font-size: 1.15rem; color: var(--cream-dim); margin-top: 18px; }
+
+  /* STEPS */
+  .how { padding: 56px 24px 24px; }
+  .how h2, .give h2, .free h2, .prizes h2 { font-size: 2rem; margin-bottom: 20px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .step h3 { font-size: 1.25rem; color: var(--rust); margin-bottom: 6px; }
+  .step p { color: var(--ink); max-width: 30ch; }
+
+  /* GIVE */
+  .give { padding: 40px 24px 24px; }
+  .give-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
+  .panel { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 28px; display: flex; flex-direction: column; }
+  .panel.alt { background: var(--black); color: var(--cream); }
+  .panel h3 { font-size: 1.6rem; margin-bottom: 6px; }
+  .panel.alt h3 { color: var(--orange); }
+  .panel .note { color: #4a4238; margin-bottom: 18px; }
+  .panel .btn { align-self: flex-start; min-width: 220px; }
+  .panel.alt .note { color: var(--cream-dim); }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+  .tier-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; background: var(--cream); border: 2px solid var(--black); border-radius: 4px; padding: 16px 8px; text-align: center; }
+  .tier-btn:hover { background: var(--orange); color: var(--white); }
+  .tier-btn .amt { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1; }
+  .tier-btn .ent { font-size: 0.95rem; margin-top: 4px; }
+  .btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.1rem; padding: 14px 26px; border-radius: 3px; text-decoration: none; border: 2px solid transparent; text-align: center; }
+  .btn-orange { background: var(--orange); color: var(--white); }
+  .btn-ghost { border-color: var(--cream-dim); color: var(--cream); }
+  .btn:hover { filter: brightness(1.08); }
+  .table-wrap { margin-top: 16px; font-size: 0.95rem; color: #4a4238; }
+  .table-wrap table { border-collapse: collapse; width: 100%; max-width: 420px; }
+  .table-wrap th, .table-wrap td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid rgba(10,10,10,0.15); }
+  .table-wrap th { font-weight: 600; }
+  .spacer { flex-grow: 1; }
+  .actions { display: flex; flex-wrap: wrap; gap: 16px; }
+  .actions .btn { width: 300px; max-width: 100%; font-size: 1.25rem; padding: 16px 28px; }
+
+  /* FREE ENTRY */
+  .free { padding: 40px 24px 24px; }
+  .free .lead { max-width: 60ch; color: var(--ink); margin-bottom: 20px; }
+  form { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 28px; max-width: 640px; }
+  .field { margin-bottom: 16px; }
+  label.lbl { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+  input[type=text], input[type=email], input[type=tel] { width: 100%; font: inherit; padding: 11px 12px; border: 2px solid var(--black); border-radius: 3px; background: var(--white); }
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; font-size: 0.97rem; }
+  .check input { margin-top: 5px; width: 18px; height: 18px; flex-shrink: 0; }
+  .hidden { position: absolute; left: -9999px; }
+
+  /* PRIZES */
+  .prizes { padding: 40px 24px 56px; }
+  .prize-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .prize { border-left: 4px solid var(--orange); padding: 4px 0 4px 14px; }
+  .prize .p { font-weight: 600; }
+  .prize .b { color: #4a4238; font-size: 0.95rem; }
+
+  /* FINE PRINT */
+  .fine { background: var(--black); color: var(--cream-dim); padding: 36px 24px 44px; font-size: 0.9rem; }
+  .fine p { max-width: 90ch; margin-bottom: 10px; }
+  .fine a { color: var(--cream); }
+
+  .ph { background: #fff3a8; color: #0A0A0A; padding: 0 3px; border-radius: 2px; }
+
+  @media (max-width: 860px) {
+    .give-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; gap: 20px; }
+    .prize-list { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) { .tiers { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Colorado Comets Baseball</div>
+      <h1>Back the team. Enter to win.</h1>
+      <p>Our players are raising money for tournament fees and equipment. Donate any amount from anywhere. Colorado residents can also enter our prize drawing for gift cards and services from local businesses. No donation is needed to enter.</p>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step"><h3>1. Give what you can</h3><p>Donate any amount online. Every dollar goes to tournament fees and equipment.</p></div>
+        <div class="step"><h3>2. Enter the drawing</h3><p>Enter online. No donation is needed to enter or win.</p></div>
+        <div class="step"><h3>3. We draw the winners</h3><p>The drawing is on December 1, 2026. Winners are contacted by phone and email.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="give" id="give">
+    <div class="wrap">
+      <h2>Take part</h2>
+      <div class="give-grid">
+
+        <div class="panel">
+          <h3>Donate</h3>
+          <p class="note">Give any amount, from anywhere. A donation of any amount automatically enters you in the drawing. You must be 18 or older and live in Colorado.</p>
+          <a class="btn btn-orange" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-sweepstakes">Donate</a>
+          <p class="table-wrap">Are you a business owner interested in adding your logo to our website and banner? Email <a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a> to find out how!</p>
+        </div>
+
+        <div class="panel">
+          <h3>Enter the drawing</h3>
+          <p class="note">Donation is not required to enter or win. Limit one entry per person per day. You must be 18 or older and live in Colorado.</p>
+          <a class="btn btn-orange" href="comets-drawing-entry.html">Enter the drawing</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<section class="prizes" id="prizes">
+    <div class="wrap">
+      <h2>The prizes</h2>
+      <div class="prize-list">
+        <!-- Add one block per prize as businesses confirm -->
+        <div class="prize"><div class="p"><span class="ph">[Prize]</span></div><div class="b">Donated by <span class="ph">[Business]</span></div></div>
+        <div class="prize"><div class="p"><span class="ph">[Prize]</span></div><div class="b">Donated by <span class="ph">[Business]</span></div></div>
+        <div class="prize"><div class="p"><span class="ph">[Prize]</span></div><div class="b">Donated by <span class="ph">[Business]</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fine">
+    <div class="wrap">
+      <p><strong>No donation is necessary to enter or win.</strong> Every entry has the same chance, whether or not a donation was made. Open to Colorado residents 18 or older. Void where prohibited. Anyone may donate, from anywhere. Your odds depend on the number of entries received.</p>
+      <p>Read the <a href="comets-drawing-rules.html">official rules</a>. The Colorado Comets is a Colorado nonprofit corporation with an application for 501(c)(3) status pending. Please ask your tax advisor how to treat your gift. Questions? <a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a></p>
+    </div>
+  </section>
+
+</body>
+</html>
