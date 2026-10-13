@@ -51,8 +51,9 @@
     <div class="wrap">
       <p class="lead">Donation is not required to enter or win. Limit one entry per person per day. You must be 18 or older and live in Colorado.</p>
 
-      <form name="drawing-entry" method="POST" action="comets-drawing-entry-thanks.html" data-netlify="true" netlify-honeypot="bot-field">
+      <form name="drawing-entry" method="POST" action="/fundraising/comets-drawing-entry-thanks.html" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="drawing-entry">
+        <input type="hidden" name="subject" value="New prize drawing entry (%{submissionId})">
         <p class="hidden"><label>Leave this empty: <input name="bot-field"></label></p>
         <div class="field"><label class="lbl" for="fe-name">Full name</label><input id="fe-name" type="text" name="name" autocomplete="name" required></div>
         <div class="field"><label class="lbl" for="fe-email">Email</label><input id="fe-email" type="email" name="email" autocomplete="email" required></div>
