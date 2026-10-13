@@ -6,7 +6,7 @@
 <title>Enter the Drawing | Colorado Comets Baseball</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=Knewave&display=swap" rel="stylesheet">
 <style>
   :root { --orange:#F25C05; --rust:#C94A1F; --black:#0A0A0A; --cream:#F2E6D0; --cream-dim:#e8d9bc; --white:#fff; --ink:#2b2621; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,29 +37,29 @@
   .fine p { max-width: 90ch; margin-bottom: 10px; }
   .fine a { color: var(--cream); }
 
-  /* SITE HEADER AND FOOTER */
-  .site-header { background: #0A0A0A; border-bottom: 4px solid #F25C05; }
-  .site-header .bar { max-width: 1020px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .site-header img { height: 56px; width: auto; display: block; }
-  .site-nav a { color: #F2E6D0; text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem; margin-left: 22px; }
-  .site-nav a:hover { color: #F25C05; }
-  .site-footer { background: #0A0A0A; color: #e8d9bc; text-align: center; padding: 36px 24px 40px; border-top: 4px solid #F25C05; }
-  .site-footer img { height: 80px; width: auto; display: block; margin: 0 auto 16px; }
-  .site-footer .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; margin-bottom: 14px; }
-  .site-footer .links a { color: #F2E6D0; text-decoration: none; font-weight: 500; }
-  .site-footer .links a:hover { color: #F25C05; }
-  .site-footer .tag { font-size: 0.95rem; color: #e8d9bc; }
+  /* SITE HEADER AND FOOTER (matched to index.html) */
+  .brand-hero { position: relative; background: #0A0A0A; text-align: center; padding: 40px 24px 36px; overflow: hidden; border-bottom: 4px solid #F25C05; }
+  .brand-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242,92,5,0.18) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,71,0,0.10) 0%, transparent 60%); pointer-events: none; }
+  .brand-hero a { display: inline-block; position: relative; z-index: 1; }
+  .brand-hero img { width: min(380px, 80vw); height: auto; display: block; filter: drop-shadow(0 0 50px rgba(242,92,5,0.4)); }
+  .brand-slogan { font-family: 'Knewave', cursive; font-size: clamp(18px, 4vw, 28px); color: #F25C05; margin: 12px auto 0; position: relative; z-index: 1; text-shadow: 0 2px 12px rgba(242,92,5,0.3); letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center; gap: 16px; width: 100%; max-width: 700px; line-height: 1.2; }
+  .brand-slogan::before, .brand-slogan::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, transparent, #F25C05); max-width: 160px; }
+  .brand-slogan::after { background: linear-gradient(to left, transparent, #F25C05); }
+  .footer { background: #0A0A0A; border-top: 2px solid #1E1E1E; padding: 48px 24px; text-align: center; color: #F2E6D0; }
+  .footer-logo { width: min(300px, 70vw); height: auto; opacity: 0.9; margin: 0 auto 28px; display: block; filter: drop-shadow(0 2px 12px rgba(242,92,5,0.2)); }
+  .footer-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 40px; margin-bottom: 28px; }
+  .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.05em; color: #F2E6D0; opacity: 0.7; text-transform: uppercase; text-decoration: none; transition: opacity 0.2s; }
+  .footer-contact:hover { opacity: 1; color: #F25C05; }
+  .footer-contact span { color: #F25C05; margin-right: 6px; }
+  .footer-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #F2E6D0; opacity: 0.3; }
+  .footer-tagline em { color: #F25C05; font-style: normal; }
   .fine { border-bottom: 1px solid rgba(232,217,188,0.2); }
 </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="bar">
-      <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
-      <nav class="site-nav" aria-label="Main">
-        <a href="https://cometbaseball.com/">Home</a><a href="https://cometbaseball.com/about">About</a><a href="https://cometbaseball.com/register">Register</a>
-      </nav>
-    </div>
+  <header class="brand-hero">
+    <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <p class="brand-slogan">Burn Bright. Blaze Your Trail.</p>
   </header>
 
 
@@ -97,13 +97,15 @@
   </section>
 
 
-  <footer class="site-footer">
-    <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
-    <div class="links">
-      <a href="https://www.cometbaseball.com">&#127760; cometbaseball.com</a>
-      <a href="mailto:info@cometbaseball.com">&#9993;&#65039; info@cometbaseball.com</a>
+  <div class="footer">
+    <img class="footer-logo" src="/Logo_3_transparent.png" alt="Colorado Comets">
+    <div class="footer-contacts">
+      <a class="footer-contact" href="https://www.cometbaseball.com"><span>&#127760;</span>cometbaseball.com</a>
+      <a class="footer-contact" href="mailto:info@cometbaseball.com"><span>&#9993;&#65039;</span>info@cometbaseball.com</a>
     </div>
-    <p class="tag"><em>Developing Confident Athletes</em> Through Baseball.</p>
-  </footer>
+    <p class="footer-tagline">
+      <em>Developing Confident Athletes</em> Through Baseball.
+    </p>
+  </div>
 </body>
 </html>
