@@ -25,40 +25,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NAV ── */
-    .site-nav {
-      background: var(--black);
-      border-bottom: 2px solid var(--charcoal);
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .site-nav img {
-      height: 44px;
-      filter: drop-shadow(0 0 10px rgba(242,92,5,0.3));
-    }
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-    .nav-links a {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream);
-      text-decoration: none;
-      opacity: 0.6;
-      transition: opacity 0.2s, color 0.2s;
-    }
-    .nav-links a:hover { opacity: 1; color: var(--orange); }
-    .nav-links a.active { opacity: 1; color: var(--orange); }
-
     /* ── HERO ── */
     .hero {
       position: relative;
@@ -254,6 +220,52 @@
       height: 80px;
       background: rgba(0,0,0,0.2);
     }
+
+    /* ── SUPPORT BAND ── */
+    .support-band {
+      background: var(--charcoal);
+      border-top: 2px solid var(--black);
+      border-bottom: 2px solid var(--black);
+      padding: 44px 24px;
+      text-align: center;
+    }
+
+    .support-inner { max-width: 760px; margin: 0 auto; }
+
+    .support-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .support-body {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--cream);
+      opacity: 0.8;
+      margin-bottom: 24px;
+    }
+
+    .support-link {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--orange);
+      text-decoration: none;
+      border: 2px solid var(--orange);
+      padding: 12px 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .support-link:hover { background: var(--orange); color: var(--black); }
 
     /* ── SECTIONS ── */
     section {
@@ -538,21 +550,11 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="site-nav">
-    <a href="index.html"><img src="Logo_3_transparent.png" alt="Colorado Comets"></a>
-    <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
-      <a href="about.html">About</a>
-      <a href="register.html">Register</a>
-    </div>
-  </nav>
-
   <!-- HERO -->
   <div class="hero">
     <img class="hero-logo" src="Logo_3_transparent.png" alt="Colorado Comets">
     <p class="hero-slogan">Burn Bright. Blaze Your Trail.</p>
-    <p class="hero-colorado">Fort Collins, Colorado &bull; 11U (2027) &bull; Competitive Baseball</p>
+    <p class="hero-colorado">Northern Colorado &bull; 11U (2027) &bull; Competitive Baseball</p>
     <h1 class="hero-headline"><span>Limited Spots</span><br>Available</h1>
     <p class="hero-sub">Request a private tryout &nbsp;&bull;&nbsp; info@cometbaseball.com</p>
     <p class="hero-philosophy">
@@ -576,6 +578,16 @@
         <div class="tryout-label">Request a Private Tryout</div>
         <div class="tryout-value tbd">info@cometbaseball.com</div>
       </div>
+    </div>
+  </div>
+
+  <!-- SUPPORT BAND -->
+  <div class="support-band">
+    <div class="support-inner">
+      <div class="section-label">Support the Comets</div>
+      <h2 class="support-title">Prize Drawing Coming Soon</h2>
+      <p class="support-body">We are raising money for tournament fees and equipment. Are you a local business? Donate a prize and help our players.</p>
+      <a href="fundraising/comets-prize-donation-form.html" class="support-link">Donate a Prize</a>
     </div>
   </div>
 
