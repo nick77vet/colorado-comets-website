@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate a Prize | Colorado Comets Baseball</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=Knewave&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#F25C05; --rust:#C94A1F; --black:#0A0A0A; --cream:#F2E6D0; --cream-dim:#e8d9bc; --white:#fff; --ink:#2b2621; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--cream); color: var(--black); line-height: 1.5; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .hero { background: var(--black); color: var(--cream); padding: 56px 24px 48px; position: relative; }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--orange), var(--rust) 55%, transparent); }
+  .hero .eyebrow { color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.06em; margin-bottom: 12px; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); }
+  main { padding: 40px 24px 56px; }
+  .lead { max-width: 60ch; color: var(--ink); margin-bottom: 20px; }
+  form { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 28px; max-width: 640px; }
+  .field { margin-bottom: 16px; }
+  label.lbl { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+  input[type=text], input[type=email], input[type=tel] { width: 100%; font: inherit; padding: 11px 12px; border: 2px solid var(--black); border-radius: 3px; background: var(--white); }
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; font-size: 0.97rem; }
+  .check input { margin-top: 5px; width: 18px; height: 18px; flex-shrink: 0; }
+  .hidden { position: absolute; left: -9999px; }
+  .btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.1rem; padding: 14px 26px; border-radius: 3px; text-decoration: none; border: 2px solid transparent; text-align: center; background: var(--orange); color: var(--white); cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn-line { background: transparent; color: var(--black); border-color: var(--black); }
+  .back { margin-top: 24px; font-size: 0.97rem; }
+  .fine { background: var(--black); color: var(--cream-dim); padding: 32px 24px 40px; font-size: 0.9rem; }
+  .fine p { max-width: 90ch; margin-bottom: 10px; }
+  .fine a { color: var(--cream); }
+
+  /* SITE HEADER AND FOOTER (matched to index.html) */
+  .brand-hero { position: relative; background: #0A0A0A; text-align: center; padding: 40px 24px 36px; overflow: hidden; border-bottom: 4px solid #F25C05; }
+  .brand-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242,92,5,0.18) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,71,0,0.10) 0%, transparent 60%); pointer-events: none; }
+  .brand-hero a { display: inline-block; position: relative; z-index: 1; }
+  .brand-hero img { width: min(380px, 80vw); height: auto; display: block; filter: drop-shadow(0 0 50px rgba(242,92,5,0.4)); }
+  .brand-slogan { font-family: 'Knewave', cursive; font-size: clamp(18px, 4vw, 28px); color: #F25C05; margin: 12px auto 0; position: relative; z-index: 1; text-shadow: 0 2px 12px rgba(242,92,5,0.3); letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center; gap: 16px; width: 100%; max-width: 700px; line-height: 1.2; }
+  .brand-slogan::before, .brand-slogan::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, transparent, #F25C05); max-width: 160px; }
+  .brand-slogan::after { background: linear-gradient(to left, transparent, #F25C05); }
+  .footer { background: #0A0A0A; border-top: 2px solid #1E1E1E; padding: 48px 24px; text-align: center; color: #F2E6D0; }
+  .footer-logo { width: min(300px, 70vw); height: auto; opacity: 0.9; margin: 0 auto 28px; display: block; filter: drop-shadow(0 2px 12px rgba(242,92,5,0.2)); }
+  .footer-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 40px; margin-bottom: 28px; }
+  .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.05em; color: #F2E6D0; opacity: 0.7; text-transform: uppercase; text-decoration: none; transition: opacity 0.2s; }
+  .footer-contact:hover { opacity: 1; color: #F25C05; }
+  .footer-contact span { color: #F25C05; margin-right: 6px; }
+  .footer-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #F2E6D0; opacity: 0.3; }
+  .footer-tagline em { color: #F25C05; font-style: normal; }
+  form.wide { max-width: 760px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  fieldset { border: 0; margin: 22px 0 6px; }
+  legend { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.3rem; padding: 0 0 6px; width: 100%; border-bottom: 3px solid var(--orange); margin-bottom: 14px; }
+  textarea, input[type=date] { width: 100%; font: inherit; padding: 11px 12px; border: 2px solid var(--black); border-radius: 3px; background: var(--white); }
+  textarea { min-height: 84px; resize: vertical; }
+  .hint { font-size: 0.88rem; color: #4a4238; font-weight: 400; }
+  .agree { font-size: 0.93rem; color: var(--ink); margin: 0 0 12px 18px; }
+  .agree li { margin-bottom: 6px; }
+  @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } }
+  .fine { border-bottom: 1px solid rgba(232,217,188,0.2); }
+</style>
+</head>
+<body>
+  <header class="brand-hero">
+    <a href="https://cometbaseball.com/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <p class="brand-slogan">Burn Bright. Blaze Your Trail.</p>
+  </header>
+
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Colorado Comets Baseball</div>
+      <h1>Donate a prize</h1>
+    </div>
+  </section>
+
+  <main>
+    <div class="wrap">
+      <p class="lead">Thank you for supporting our players! Your donated prize helps us draw attention and donations that pay for tournament fees and equipment. Fill out this form whenever you have a few minutes. Questions? Email <a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a>.</p>
+
+      <form class="wide" name="prize-donation" method="POST" action="/fundraising/comets-prize-donation-thanks.html" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="prize-donation">
+        <input type="hidden" name="subject" value="New prize donation (%{submissionId})">
+        <p class="hidden"><label>Leave this empty: <input name="bot-field"></label></p>
+        <fieldset><legend>1. Business information</legend>
+        <div class="field"><label class="lbl" for="pd-biz">Business name</label><input id="pd-biz" type="text" name="business" autocomplete="organization" required></div>
+        <div class="row2">
+        <div class="field"><label class="lbl" for="pd-contact">Contact person</label><input id="pd-contact" type="text" name="name" autocomplete="name" required></div>
+        <div class="field"><label class="lbl" for="pd-title">Title</label><input id="pd-title" type="text" name="title" autocomplete="organization-title"></div>
+        </div>
+        <div class="row2">
+        <div class="field"><label class="lbl" for="pd-email">Email</label><input id="pd-email" type="email" name="email" autocomplete="email" required></div>
+        <div class="field"><label class="lbl" for="pd-phone">Phone</label><input id="pd-phone" type="tel" name="phone" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label class="lbl" for="pd-web">Website or social media</label><input id="pd-web" type="text" name="website"></div>
+        <div class="field"><label class="lbl" for="pd-addr">Mailing address, city, state, ZIP</label><input id="pd-addr" type="text" name="address" autocomplete="street-address" required></div>
+        </fieldset>
+        <fieldset><legend>2. The prize</legend>
+        <div class="field"><label class="lbl" for="pd-desc">Describe the prize <span class=hint>(example: $50 gift certificate to our restaurant)</span></label><textarea id="pd-desc" name="prize" required></textarea></div>
+        <div class="row2">
+        <div class="field"><label class="lbl" for="pd-value">Retail value <span class=hint>(your good-faith estimate)</span></label><input id="pd-value" type="text" name="value" required></div>
+        <div class="field"><label class="lbl" for="pd-qty">Number of prizes</label><input id="pd-qty" type="text" name="quantity" required></div>
+        </div>
+        <div class="field"><label class="lbl" for="pd-exp">Expiration date, if any</label><input id="pd-exp" type="text" name="expiration"></div>
+        <div class="field"><label class="lbl" for="pd-rest">Restrictions or how to redeem <span class=hint>(example: dine in only, appointment required, not valid on holidays)</span></label><textarea id="pd-rest" name="restrictions"></textarea></div>
+        </fieldset>
+        <fieldset><legend>3. Getting the prize to us</legend>
+        <label class="check"><input type="radio" name="delivery" value="Gift certificate or voucher: we will email it or drop it off" required> <span>Gift certificate or voucher: we will email it or drop it off</span></label>
+        <label class="check"><input type="radio" name="delivery" value="Physical item: we will arrange pickup or deliver it"> <span>Physical item: please arrange a pickup with us, or we will deliver it</span></label>
+        <label class="check"><input type="radio" name="delivery" value="Winner contacts business directly"> <span>The winner will contact us directly to claim the prize, and we will honor it</span></label>
+        <div class="field"><label class="lbl" for="pd-when">Date we will deliver it, if known</label><input id="pd-when" type="text" name="delivery_date"></div>
+        </fieldset>
+        <fieldset><legend>4. Recognition <span class="hint">(check all that apply)</span></legend>
+        <label class="check"><input type="checkbox" name="recognition" value="Business name on prize page and website"> <span>List our business name on the Comets prize drawing page and website</span></label>
+        <label class="check"><input type="checkbox" name="recognition" value="Logo on website and banner"> <span>Include our logo on the Comets website and banner (please email the logo file to info@cometbaseball.com)</span></label>
+        <label class="check"><input type="checkbox" name="recognition" value="Social media thank you"> <span>Thank us on Comets social media</span></label>
+        <div class="field"><label class="lbl" for="pd-handle">Our social media handle</label><input id="pd-handle" type="text" name="handle"></div>
+        <label class="check"><input type="checkbox" name="recognition" value="Anonymous"> <span>Please keep our donation anonymous</span></label>
+        </fieldset>
+        <fieldset><legend>5. Agreement</legend>
+        <p class="agree" style="margin-left:0">By submitting this form, I confirm that I am authorized to donate this prize on behalf of the business named above, and that:</p>
+        <ul class="agree">
+          <li>The prize is a gift to the Colorado Comets. The Comets will choose winners at random in the prize drawing on December 1, 2026.</li>
+          <li>The business will honor the prize as described above for the winner. Winners must be 18 or older and live in Colorado.</li>
+          <li>The Comets did not give anything of value in return for this prize, other than the recognition checked in Section 4. The Colorado Comets is a Colorado nonprofit corporation recognized as tax-exempt under section 501(c)(3). Please ask your tax advisor how to treat your gift.</li>
+          <li>The Comets may describe the prize and name the business in drawing materials, on the website, and on social media as checked in Section 4.</li>
+        </ul>
+        <label class="check"><input type="checkbox" name="agree" required> <span>I agree to the statements above.</span></label>
+        <div class="row2">
+        <div class="field"><label class="lbl" for="pd-sig">Type your full name as your signature</label><input id="pd-sig" type="text" name="signature" required></div>
+        <div class="field"><label class="lbl" for="pd-date">Date</label><input id="pd-date" type="date" name="date" required></div>
+        </div>
+        </fieldset>
+        <div class="btns"><button class="btn" type="submit">Submit prize donation</button></div>
+      </form>
+
+      <p class="back"><a href="comets-drawing-donate-page.html">Back to the drawing page</a></p>
+    </div>
+  </main>
+
+  <section class="fine">
+    <div class="wrap">
+      <p>Read the <a href="comets-drawing-rules.html">official rules</a>. The Colorado Comets is a Colorado nonprofit corporation recognized as tax-exempt under section 501(c)(3).</p>
+    </div>
+  </section>
+
+
+  <div class="footer">
+    <img class="footer-logo" src="/Logo_3_transparent.png" alt="Colorado Comets">
+    <div class="footer-contacts">
+      <a class="footer-contact" href="https://www.cometbaseball.com"><span>&#127760;</span>cometbaseball.com</a>
+      <a class="footer-contact" href="mailto:info@cometbaseball.com"><span>&#9993;&#65039;</span>info@cometbaseball.com</a>
+    </div>
+    <p class="footer-tagline">
+      <em>Developing Confident Athletes</em> Through Baseball.
+    </p>
+  </div>
+</body>
+</html>
