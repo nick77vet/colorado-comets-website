@@ -248,7 +248,7 @@
 
     /* ── SUPPORT BAND ── */
     .support-band {
-      background: var(--charcoal);
+      background: var(--orange);
       border-top: 2px solid var(--black);
       border-bottom: 2px solid var(--black);
       padding: 44px 24px;
@@ -290,7 +290,16 @@
       transition: background 0.2s, color 0.2s;
     }
 
-    .support-link:hover { background: var(--orange); color: var(--black); }
+    .support-band .section-label { color: var(--black); }
+    .support-band .support-title { color: var(--black); }
+    .support-band .support-body { color: var(--black); opacity: 0.85; }
+    .support-band .support-link { color: var(--black); border-color: var(--black); }
+    .support-band .support-link:hover { background: var(--black); color: var(--orange); }
+    .donate-band { background: var(--charcoal); border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); padding: 44px 24px; text-align: center; }
+    .donate-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(26px, 5vw, 40px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1.05; color: var(--cream); margin-bottom: 10px; }
+    .donate-body { font-size: 17px; line-height: 1.6; color: var(--cream); opacity: 0.8; max-width: 620px; margin: 0 auto 22px; }
+    .donate-btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--black); background: var(--orange); text-decoration: none; padding: 14px 32px; border: 2px solid var(--orange); transition: background 0.2s, color 0.2s; }
+    .donate-btn:hover { background: transparent; color: var(--orange); }
 
     /* ── SECTIONS ── */
     section {
@@ -609,12 +618,19 @@
     </div>
   </div>
 
+  <!-- DONATE -->
+  <div class="donate-band">
+    <h2 class="donate-title">Give to the Comets</h2>
+    <p class="donate-body">Your gift helps cover tournament fees, training equipment, and field time so every player can learn, compete, and grow.</p>
+    <a href="https://www.zeffy.com/en-US/donation-form/colorado-comets-donations" class="donate-btn">Donate Now</a>
+  </div>
+
   <!-- SUPPORT BAND -->
   <div class="support-band">
     <div class="support-inner">
       <div class="section-label">Support the Comets</div>
-      <h2 class="support-title">Prize Drawing Coming Soon</h2>
-      <p class="support-body">We are raising money for tournament fees and equipment. Are you a local business? Donate a prize and help our players.</p>
+      <h2 class="support-title">Sweepstakes Coming Soon</h2>
+      <p class="support-body">We are raising money for tournament fees and equipment.<br>Are you a local business? Donate a prize and help our players.</p>
       <a href="fundraising/comets-prize-donation-form.html" class="support-link">Donate a Prize</a>
     </div>
   </div>
