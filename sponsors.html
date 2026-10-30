@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponsor the Comets | Colorado Comets Baseball</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=Knewave&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#F25C05; --rust:#C94A1F; --black:#0A0A0A; --cream:#F2E6D0; --cream-dim:#e8d9bc; --white:#fff; --ink:#2b2621; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--cream); color: var(--black); line-height: 1.5; }
+  h1,h2,h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .hero { background: var(--black); color: var(--cream); padding: 56px 24px 48px; position: relative; }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--orange), var(--rust) 55%, transparent); }
+  .eyebrow { color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.06em; margin-bottom: 12px; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); }
+  .hero p { max-width: 56ch; margin-top: 16px; color: var(--cream-dim); font-size: 1.12rem; }
+  main { padding: 48px 24px 64px; }
+  h2.sec { font-size: 2rem; margin-bottom: 8px; }
+  .sub { max-width: 62ch; color: #4a4238; margin-bottom: 28px; font-size: 1.05rem; }
+  .btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.1rem; padding: 14px 26px; border-radius: 3px; text-decoration: none; border: 2px solid transparent; text-align: center; background: var(--orange); color: var(--white); cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn-line { background: transparent; color: var(--black); border-color: var(--black); }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .ph { background: #fff3a8; padding: 0 3px; border-radius: 2px; }
+  .band { padding: 56px 24px; }
+  .band.dark { background: var(--black); color: var(--cream); }
+  .band.dark .sub { color: var(--cream-dim); }
+  .band.white { background: var(--white); }
+  /* tiers */
+  .tier-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; margin-top: 24px; }
+  .tier-card { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 26px 22px; display: flex; flex-direction: column; }
+  .tier-card.platinum { background: var(--black); color: var(--cream); }
+  .tier-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.6rem; }
+  .platinum .tier-name { color: var(--orange); }
+  .tier-price { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.4rem; color: var(--orange); margin: 2px 0 14px; }
+  .tier-list { list-style: none; font-size: 0.98rem; }
+  .tier-list li { padding: 9px 0; border-top: 1px solid rgba(10,10,10,0.12); display: flex; gap: 10px; }
+  .platinum .tier-list li { border-top-color: rgba(242,230,208,0.2); }
+  .tier-list li:first-child { border-top: none; }
+  .mark { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+  .opt-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; max-width: 860px; margin-top: 24px; }
+  .opt { border-left: 4px solid var(--orange); padding-left: 20px; }
+  .opt h3 { font-size: 1.35rem; }
+  .opt .price { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.3rem; color: var(--orange); margin: 4px 0 8px; }
+  .opt p { max-width: 38ch; }
+  .dark .opt p { color: var(--cream-dim); }
+  .note { margin-top: 28px; max-width: 64ch; font-size: 0.98rem; }
+  .dark .note { color: var(--cream-dim); }
+  /* pay */
+  .pay-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 24px; }
+  .pay { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 24px; }
+  .pay.pref { border-color: var(--orange); }
+  .pay .tag { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; background: var(--orange); color: var(--white); padding: 3px 9px; border-radius: 3px; margin-bottom: 10px; }
+  .pay h3 { font-size: 1.4rem; margin-bottom: 10px; }
+  .pay dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 0.98rem; margin-bottom: 10px; }
+  .pay dt { font-weight: 600; }
+  .pay p { font-size: 0.95rem; color: #4a4238; }
+  .steps { list-style: none; margin-top: 8px; max-width: 640px; counter-reset: s; }
+  .steps li { display: flex; gap: 16px; padding: 12px 0; counter-increment: s; }
+  .steps li::before { content: counter(s); width: 34px; height: 34px; border-radius: 50%; background: var(--black); color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cta-strip { background: var(--orange); color: var(--white); text-align: center; padding: 48px 24px; }
+  .cta-strip h2 { font-size: 2rem; margin-bottom: 10px; }
+  .cta-strip p { margin-bottom: 20px; }
+  .cta-strip .btn { background: var(--black); }
+  /* form */
+  form { background: var(--white); border: 2px solid var(--black); border-radius: 4px; padding: 28px; max-width: 760px; }
+  .field { margin-bottom: 16px; }
+  label.lbl { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+  input[type=text], input[type=email], input[type=tel], input[type=number], textarea, select { width: 100%; font: inherit; padding: 11px 12px; border: 2px solid var(--black); border-radius: 3px; background: var(--white); }
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; font-size: 0.97rem; }
+  .check input { margin-top: 5px; width: 18px; height: 18px; flex-shrink: 0; }
+  .hidden { position: absolute; left: -9999px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  fieldset { border: 0; margin: 22px 0 6px; }
+  legend { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.3rem; padding: 0 0 6px; width: 100%; border-bottom: 3px solid var(--orange); margin-bottom: 14px; }
+  .help { font-size: 0.88rem; color: #6b5f4f; margin-top: 3px; }
+  .back { margin-top: 24px; font-size: 0.97rem; }
+  /* header/footer */
+  .brand-hero { position: relative; background: #0A0A0A; text-align: center; padding: 40px 24px 36px; overflow: hidden; border-bottom: 4px solid #F25C05; }
+  .brand-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242,92,5,0.18) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,71,0,0.10) 0%, transparent 60%); pointer-events: none; }
+  .brand-hero a { display: inline-block; position: relative; z-index: 1; }
+  .brand-hero img { width: min(380px, 80vw); height: auto; display: block; filter: drop-shadow(0 0 50px rgba(242,92,5,0.4)); }
+  .brand-slogan { font-family: 'Knewave', cursive; font-size: clamp(18px, 4vw, 28px); color: #F25C05; margin: 12px auto 0; position: relative; z-index: 1; text-shadow: 0 2px 12px rgba(242,92,5,0.3); letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center; gap: 16px; width: 100%; max-width: 700px; line-height: 1.2; }
+  .brand-slogan::before, .brand-slogan::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, transparent, #F25C05); max-width: 160px; }
+  .brand-slogan::after { background: linear-gradient(to left, transparent, #F25C05); }
+  .footer { background: #0A0A0A; border-top: 2px solid #1E1E1E; padding: 48px 24px; text-align: center; color: #F2E6D0; }
+  .footer-logo { width: min(300px, 70vw); height: auto; opacity: 0.9; margin: 0 auto 28px; display: block; filter: drop-shadow(0 2px 12px rgba(242,92,5,0.2)); }
+  .footer-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 40px; margin-bottom: 28px; }
+  .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.05em; color: #F2E6D0; opacity: 0.7; text-transform: uppercase; text-decoration: none; }
+  .footer-contact:hover { opacity: 1; color: #F25C05; }
+  .footer-contact span { color: #F25C05; margin-right: 6px; }
+  .footer-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #F2E6D0; opacity: 0.3; }
+  .footer-tagline em { color: #F25C05; font-style: normal; }
+  @media (max-width: 860px) { .tier-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .tier-grid, .opt-grid, .pay-grid, .row2 { grid-template-columns: 1fr; } .opt-grid { gap: 28px; } form { padding: 20px; } }
+  .rec { font-size: 0.92rem; font-weight: 600; margin: -8px 0 14px; opacity: 0.85; }
+  .tier-list { flex-grow: 1; margin-bottom: 18px; }
+  .card-btn { font-size: 1rem; padding: 12px 16px; }
+  .platinum .card-btn { background: var(--orange); }
+  .hero .btn-line { color: var(--cream); border-color: var(--cream-dim); }
+  .dark .btn { margin-top: 28px; }
+</style>
+</head>
+<body>
+  <header class="brand-hero">
+    <a href="/"><img src="/Logo_3_transparent.png" alt="Colorado Comets"></a>
+    <div class="brand-slogan">Burn Bright. Blaze Your Trail.</div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Sponsor the Comets</div>
+      <h1>Back the team.<br>Be seen in Fort Collins.</h1>
+      <p>Your sponsorship helps cover tournament fees, training equipment, field time, and more. In return, your business is seen by our families, our fans, and the teams we play. You can sign up and pay online in a couple of minutes.</p>
+      <div class="btns" style="margin-top:28px"><a class="btn" href="#season">Season sponsor</a><a class="btn btn-line" href="#tournaments">Sponsor a tournament</a><a class="btn btn-line" href="#community">Community partner</a></div>
+    </div>
+  </section>
+
+  <section class="band" id="season">
+    <div class="wrap">
+      <h2 class="sec">Season Sponsors</h2>
+      <p class="sub">Support the team all season long. Every level includes your logo on this website and a thank-you on social media. Choose a recurring sponsorship and save 10%.</p>
+      <div class="tier-grid">
+        <div class="tier-card"><div class="tier-name">Bronze</div><div class="tier-price">$1,000</div>
+<div class="rec">or $900 a year, recurring (save 10%)</div><ul class="tier-list"><li><span class="mark">&#10003;</span> Logo on our website</li><li><span class="mark">&#10003;</span> Logo on the team banner, bottom row</li><li><span class="mark">&#10003;</span> Thank-you on social media</li></ul>
+<a class="btn card-btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-youth-baseball-sponsorship">Sponsor at this level</a></div>
+        <div class="tier-card"><div class="tier-name">Silver</div><div class="tier-price">$1,300</div>
+<div class="rec">or $1,170 a year, recurring (save 10%)</div><ul class="tier-list"><li><span class="mark">&#10003;</span> Logo on our website</li><li><span class="mark">&#10003;</span> Logo on the team banner, larger size above Bronze</li><li><span class="mark">&#10003;</span> Thank-you on social media</li></ul>
+<a class="btn card-btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-youth-baseball-sponsorship">Sponsor at this level</a></div>
+        <div class="tier-card"><div class="tier-name">Gold</div><div class="tier-price">$1,700</div>
+<div class="rec">or $1,530 a year, recurring (save 10%)</div><ul class="tier-list"><li><span class="mark">&#10003;</span> Logo on our website</li><li><span class="mark">&#10003;</span> Logo on the team banner, larger size above Silver</li><li><span class="mark">&#10003;</span> Thank-you on social media</li></ul>
+<a class="btn card-btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-youth-baseball-sponsorship">Sponsor at this level</a></div>
+        <div class="tier-card platinum"><div class="tier-name">Platinum</div><div class="tier-price">$2,000</div>
+<div class="rec">or $1,800 a year, recurring (save 10%)</div><ul class="tier-list"><li><span class="mark">&#10003;</span> Logo on our website</li><li><span class="mark">&#10003;</span> Top row of the team banner, largest size</li><li><span class="mark">&#10003;</span> Logo on player bags</li><li><span class="mark">&#10003;</span> Thank-you on social media</li></ul>
+<a class="btn card-btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-youth-baseball-sponsorship">Sponsor at this level</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark" id="tournaments">
+    <div class="wrap">
+      <h2 class="sec">Sponsor a Tournament</h2>
+      <p class="sub">Pick the tournament you want to be part of. A Comets representative will contact you to choose which one.</p>
+      <div class="opt-grid">
+        <div class="opt"><h3>Partial Tournament Sponsor</h3><div class="price">$400+</div><p>Share a tournament with other sponsors. Your logo on our tournament banner, our website, and a social media post thanking you.</p></div>
+        <div class="opt"><h3>Full Tournament Sponsor</h3><div class="price">$800+</div><p>Cover a tournament as its featured sponsor. Your logo on its own banner at our games throughout the tournament, plus our website and a social media post.</p></div>
+      </div>
+      <a class="btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-tournament-sponsorship">Sponsor a tournament</a>
+    </div>
+  </section>
+
+  <section class="band white" id="community">
+    <div class="wrap">
+      <h2 class="sec">Community Partner</h2>
+      <div class="opt" style="margin-top:20px;max-width:640px"><div class="price">$100 to $399</div><p style="max-width:56ch">A simple way for any local business to support the team. Your logo appears on the Colorado Comets website. Giving $400 or more? Sponsor a tournament to get your logo on a tournament banner.</p></div>
+      <div style="margin-top:28px"><a class="btn" href="https://www.zeffy.com/en-US/donation-form/colorado-comets-season-sponsorship">Become a community partner</a></div>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <h2 class="sec">How It Works</h2>
+      <ol class="steps">
+        <li><div><strong>Choose a level</strong> above and fill out the short online form. You can pay by card or bank transfer.</div></li>
+        <li><div><strong>A Comets representative will contact you</strong> about the logo you would like us to use, and about your tournament if you chose one.</div></li>
+        <li><div><strong>We add your logo</strong> to the website, banner, and social media as listed for your level.</div></li>
+      </ol>
+      <p class="note">Prefer to pay by Zelle or check? Email <a href="mailto:info@cometbaseball.com">info@cometbaseball.com</a> and we will help you.</p>
+    </div>
+  </section>
+
+  <div class="footer">
+    <img class="footer-logo" src="/Logo_3_transparent.png" alt="Colorado Comets">
+    <div class="footer-contacts">
+      <a class="footer-contact" href="https://www.cometbaseball.com"><span>&#127760;</span>cometbaseball.com</a>
+      <a class="footer-contact" href="mailto:info@cometbaseball.com"><span>&#9993;&#65039;</span>info@cometbaseball.com</a>
+    </div>
+    <p class="footer-tagline"><em>Developing Confident Athletes</em> Through Baseball.</p>
+  </div>
+</body>
+</html>
