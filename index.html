@@ -28,13 +28,12 @@
     /* ── HERO ── */
     .hero {
       position: relative;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 24px 80px;
+      padding: 44px 24px 56px;
       overflow: hidden;
     }
 
@@ -290,11 +289,14 @@
       transition: background 0.2s, color 0.2s;
     }
 
+    .support-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
     .support-band .section-label { color: var(--black); }
     .support-band .support-title { color: var(--black); }
     .support-band .support-body { color: var(--black); opacity: 0.85; }
     .support-band .support-link { color: var(--black); border-color: var(--black); }
     .support-band .support-link:hover { background: var(--black); color: var(--orange); }
+    .support-band .support-primary { background: var(--black); color: var(--orange); border-color: var(--black); }
+    .support-band .support-primary:hover { background: transparent; color: var(--black); }
     .donate-band { background: var(--charcoal); border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); padding: 44px 24px; text-align: center; }
     .donate-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(26px, 5vw, 40px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1.05; color: var(--cream); margin-bottom: 10px; }
     .donate-body { font-size: 17px; line-height: 1.6; color: var(--cream); opacity: 0.8; max-width: 620px; margin: 0 auto 22px; }
@@ -603,17 +605,15 @@
     </p>
   </div>
 
-  <!-- TRYOUT BANNER -->
-  <div class="tryout-banner">
-    <div class="tryout-banner-inner">
-      <div>
-        <div class="tryout-label">Roster Status</div>
-        <div class="tryout-value" style="font-size: clamp(28px, 5vw, 52px);">Limited Spots Remaining</div>
-      </div>
-
-      <div>
-        <div class="tryout-label">Request a Private Tryout</div>
-        <div class="tryout-value tbd">info@cometbaseball.com</div>
+  <!-- SUPPORT BAND -->
+  <div class="support-band">
+    <div class="support-inner">
+      <div class="section-label">Support the Comets</div>
+      <h2 class="support-title">Enter the Sweepstakes!</h2>
+      <p class="support-body">We are raising money for tournament fees and equipment.<br>Are you a local business? Donate a prize and help our players.</p>
+      <div class="support-btns">
+        <a href="fundraising/comets-drawing-donate-page.html" class="support-link support-primary">Enter the Sweepstakes</a>
+        <a href="fundraising/comets-prize-donation-form.html" class="support-link">Donate a Prize</a>
       </div>
     </div>
   </div>
@@ -623,16 +623,6 @@
     <h2 class="donate-title">Give to the Comets</h2>
     <p class="donate-body">Your gift helps cover tournament fees, training equipment, and field time so every player can learn, compete, and grow.</p>
     <a href="https://www.zeffy.com/en-US/donation-form/colorado-comets-donations" class="donate-btn">Donate Now</a>
-  </div>
-
-  <!-- SUPPORT BAND -->
-  <div class="support-band">
-    <div class="support-inner">
-      <div class="section-label">Support the Comets</div>
-      <h2 class="support-title">Sweepstakes Coming Soon</h2>
-      <p class="support-body">We are raising money for tournament fees and equipment.<br>Are you a local business? Donate a prize and help our players.</p>
-      <a href="fundraising/comets-prize-donation-form.html" class="support-link">Donate a Prize</a>
-    </div>
   </div>
 
   <!-- WHAT MAKES US DIFFERENT -->
